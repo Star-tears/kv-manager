@@ -3,10 +3,10 @@ from sqlmodel import Session, and_, select, delete
 from sqlalchemy.exc import NoResultFound
 
 
-def get_kv(session: Session, bucketName: str) -> KvData:
+def get_kv(session: Session, bucketName: str):
     statement = select(KvData).where(KvData.bucket == bucketName)
-    result = session.execute(statement)
-    return result.all()
+    result = session.exec(statement).all()
+    return result
 
 
 def upsert_kv(session: Session, key: str, value: str, bucketName: str) -> KvData:
@@ -25,7 +25,7 @@ def upsert_kv(session: Session, key: str, value: str, bucketName: str) -> KvData
     return kv
 
 
-def create_kv_record(session: Session, kv_data: KvData) -> KvRecord:
+def create_kv_record(session: Session, kv_data: KvData):
     statement = select(KvRecord).where(
         and_(
             KvRecord.key == kv_data.key,
@@ -61,13 +61,13 @@ def delete_kv_record(session: Session, key: str, bucketName: str) -> None:
     statement = delete(KvRecord).where(
         and_(KvRecord.key == key, KvRecord.bucket == bucketName)
     )
-    session.execute(statement)
+    session.exec(statement)
     session.commit()
 
 
 def delete_bucket(session: Session, bucketName: str) -> None:
     delete_kv = delete(KvData).where(KvData.bucket == bucketName)
-    session.execute(delete_kv)
+    session.exec(delete_kv)
     delete_kv_record = delete(KvRecord).where(KvRecord.bucket == bucketName)
-    session.execute(delete_kv_record)
+    session.exec(delete_kv_record)
     session.commit()

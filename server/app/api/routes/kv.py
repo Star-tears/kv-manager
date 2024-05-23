@@ -1,6 +1,7 @@
 from app.api.deps import SessionDep
 from app.models.kv_items import BucketItemBase, KvItemBase
 from app.models.response import ResponseBase
+from app.models.sql_models import KvData
 from fastapi import APIRouter, Depends, File, UploadFile
 from fastapi.responses import JSONResponse
 
@@ -13,7 +14,7 @@ router = APIRouter()
 @router.get("/get_kv_data", response_model=ResponseBase)
 def get_kv_data(data: BucketItemBase, session: SessionDep):
     kv_data = crud.get_kv(session, data.bucketName)
-    return ResponseBase(code=0, data={})
+    return ResponseBase(code=0, data=kv_data)
 
 
 @router.post("/update_kv", response_model=ResponseBase)
