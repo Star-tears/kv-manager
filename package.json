@@ -5,12 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev-server": "cd server && poetry run python app/main.py -- --frontend-path \"../dist\" --webserver-path \"../.web-server\"",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "build-server": "cd server && python -m nuitka --lto=no --standalone --onefile --output-dir=./build --output-filename=kv-manager app/main.py",
+    "build-all": "yarn build && yarn build-server",
+    "preview-after-build": "cp -r dist ./server/build && cp -r .web-server ./server/build && cd ./server/build && ./kv-manager"
   },
   "dependencies": {
     "@radix-icons/vue": "^1.0.0",
