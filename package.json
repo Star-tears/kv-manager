@@ -12,6 +12,7 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
+    "install-all": "yarn install && cd server && poetry install",
     "build-server": "cd server && python -m nuitka --lto=no --standalone --onefile --output-dir=./build --output-filename=kv-manager app/main.py",
     "build-all": "yarn build && yarn build-server",
     "preview-after-build": "cp -r dist ./server/build && cp -r .web-server ./server/build && cd ./server/build && ./kv-manager"
