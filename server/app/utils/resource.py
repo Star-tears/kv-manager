@@ -1,4 +1,5 @@
 import os
+import shutil
 
 
 def get_folder_list(path):
@@ -29,14 +30,15 @@ def create_folder(path):
         return False
 
 
-def delete_folder(path):
+def delete_folder(folder_path):
     """
-    删除文件夹
-    :param path: 文件夹路径
-    :return: 是否删除成功
+    删除指定的文件夹及其包含的所有内容。
+
+    :param folder_path: 要删除的文件夹路径
     """
-    if os.path.exists(path):
-        os.rmdir(path)
+    try:
+        shutil.rmtree(folder_path)
         return True
-    else:
+    except OSError as e:
+        print(f"删除文件夹时发生错误: {e.strerror}")
         return False

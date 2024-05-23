@@ -4,7 +4,7 @@ from app.common.config import Config
 from app.models.kv_items import BucketFile, BucketItemBase, KvItemBase
 from app.models.response import ResponseBase
 from app.models.sql_models import KvData
-from app.utils.resource import create_folder
+from app.utils.resource import create_folder, delete_folder
 from fastapi import APIRouter, Depends, File, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 
@@ -30,7 +30,15 @@ def update_kv(data: KvItemBase, session: SessionDep):
 def create_bucket(data: BucketItemBase):
     path = os.path.join(Config.WEBSERVER, "kv", "buckets", data.bucketName)
     result = create_folder(path)
-    return ResponseBase(code=0, data={"result": result})
+    return ResponseBase(code=0, data={"message": f"Bucket create result: {result}"})
+
+
+@router.post("/delete_bucket", response_model=ResponseBase)
+def delete_bucket(data: BucketItemBase, session: SessionDep):
+    path = os.path.join(Config.WEBSERVER, "kv", "buckets", data.bucketName)
+    crud.delete_bucket(session, data.bucketName)
+    result = delete_folder(path)
+    return ResponseBase(code=0, data={"message": f"Bucket delete result: {result}"})
 
 
 @router.post("/upload-file")
