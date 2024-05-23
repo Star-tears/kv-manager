@@ -8,3 +8,7 @@ class BucketItemBase(BaseModel):
 class KvItemBase(BucketItemBase):
     key: str
     value: str
+
+
+class BucketFile(BucketItemBase):
+    relativePath: str
