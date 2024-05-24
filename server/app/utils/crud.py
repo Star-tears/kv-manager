@@ -30,6 +30,14 @@ def upsert_kv(session: Session, key: str, value: str, bucketName: str) -> KvData
     return kv
 
 
+def get_kv_record(session: Session, key: str, bucketName: str):
+    statement = select(KvRecord).where(
+        and_(KvRecord.key == key, KvRecord.bucket == bucketName)
+    )
+    result = session.exec(statement).all()
+    return result
+
+
 def create_kv_record(session: Session, kv_data: KvData):
     statement = select(KvRecord).where(
         and_(

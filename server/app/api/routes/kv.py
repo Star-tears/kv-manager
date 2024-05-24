@@ -31,6 +31,12 @@ def get_kv_data(data: BucketItemBase, session: SessionDep):
     return ResponseBase(code=0, data=kv_data)
 
 
+@router.get("/get_kv_record", response_model=ResponseBase)
+def get_kv_record(data: KvItemBase, session: SessionDep):
+    kv_record = crud.get_kv_record(session, data.key, data.bucketName)
+    return ResponseBase(code=0, data=kv_record)
+
+
 @router.post("/update_kv", response_model=ResponseBase)
 def update_kv(data: KvItem, session: SessionDep):
     kv_data = crud.upsert_kv(session, data.key, data.value, data.bucketName)
