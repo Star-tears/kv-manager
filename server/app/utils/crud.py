@@ -43,7 +43,7 @@ def create_kv_record(session: Session, kv_data: KvData):
         and_(
             KvRecord.key == kv_data.key,
             KvRecord.value == kv_data.value,
-            KvRecord.updated_at == KvRecord.updated_at,
+            KvRecord.updated_at == kv_data.updated_at,
             KvRecord.bucket == kv_data.bucket,
         )
     )
