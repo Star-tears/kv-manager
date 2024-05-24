@@ -23,12 +23,7 @@
           <vxe-input v-model="row.key" type="text"></vxe-input>
         </template>
       </vxe-column>
-      <vxe-column
-        field="value"
-        title="值"
-        :edit-render="{ autofocus: '.vxe-input--inner' }"
-        type="html"
-      >
+      <vxe-column field="value" title="值" :edit-render="{ autofocus: '.vxe-input--inner' }">
         <template #edit="{ row }">
           <NInput
             v-model:value="row.value"
@@ -104,10 +99,12 @@ const searchEvent = () => {
     list.value = rest.map((row) => {
       const item: any = Object.assign({}, row);
       searchProps.forEach((key) => {
-        item[key] = String(item[key]).replace(
-          filterRE,
-          (match) => `<span class="keyword-lighten">${match}</span>`
-        );
+        if (key != 'value') {
+          item[key] = String(item[key]).replace(
+            filterRE,
+            (match) => `<span class="keyword-lighten">${match}</span>`
+          );
+        }
       });
       return item;
     });
