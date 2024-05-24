@@ -12,6 +12,7 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
+    "generate-client": "openapi-ts --input http://localhost:11028/api/v1/openapi.json --output ./src/client --client axios",
     "install-all": "yarn install && cd server && poetry install",
     "build-server": "cd server && python -m nuitka --lto=no --standalone --onefile --output-dir=./build --output-filename=kv-manager app/main.py",
     "build-all": "yarn build && yarn build-server",
@@ -20,6 +21,7 @@
   "dependencies": {
     "@radix-icons/vue": "^1.0.0",
     "@vueuse/core": "^10.9.0",
+    "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "path-browserify": "^1.0.1",
@@ -31,6 +33,7 @@
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "^0.46.2",
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.12.5",
