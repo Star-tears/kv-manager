@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex flex-col items-center gap-4">
     <ToggleGroup
       v-model="bucketName"
       type="single"
@@ -18,6 +18,9 @@
         </ToggleGroupItem>
       </template>
     </ToggleGroup>
+    <n-button class="p-3" @click="showCreateBucketDialog"
+      ><Icon icon="material-symbols:add"
+    /></n-button>
   </div>
 </template>
 
@@ -28,9 +31,14 @@ import { useThemeVars } from 'naive-ui';
 import { useKvStore } from '@/stores/kv';
 import { storeToRefs } from 'pinia';
 import { KvService } from '@/client';
+import { Icon } from '@iconify/vue/dist/iconify.js';
+import CreateBucketDialog from './dialogs/CreateBucketDialog.vue';
 
+const message = useMessage();
 const kvStore = useKvStore();
 const { bucketName, bucketList } = storeToRefs(kvStore);
+const newBucketName = ref<string>('');
+const dialog = useDialog();
 
 onMounted(() => {
   KvService.kvGetBucketList().then((res) => {
@@ -58,5 +66,44 @@ const getActiveColor = (value: string) => {
   }
 
   return styleValue;
+};
+
+const createBucket = async () => {
+  if (newBucketName.value === '') {
+    message.error('存储桶名不能为空');
+    return;
+  }
+  await KvService.kvCreateBucket({
+    requestBody: {
+      bucketName: newBucketName.value
+    }
+  });
+  message.success('创建成功');
+  const res = await KvService.kvGetBucketList();
+  if (res.code === 0) {
+    bucketList.value = res.data as string[];
+  }
+};
+
+const showCreateBucketDialog = () => {
+  newBucketName.value = '';
+  const d = dialog.success({
+    title: '新建存储桶',
+    content: () =>
+      h(CreateBucketDialog, {
+        bucketName: newBucketName.value,
+        'onUpdate:bucketName': (val: string) => {
+          newBucketName.value = val;
+        }
+      }),
+    positiveText: '确认创建',
+    onPositiveClick: () => {
+      d.loading = true;
+
+      return new Promise((resolve) => {
+        createBucket().then(resolve);
+      });
+    }
+  });
 };
 </script>

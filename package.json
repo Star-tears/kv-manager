@@ -19,6 +19,7 @@
     "preview-after-build": "cp -r dist ./server/build && cp -r .web-server ./server/build && cd ./server/build && ./kv-manager"
   },
   "dependencies": {
+    "@iconify/vue": "^4.1.2",
     "@radix-icons/vue": "^1.0.0",
     "@vueuse/core": "^10.9.0",
     "axios": "^1.7.2",

@@ -8,10 +8,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('./src/components/ui/button/Button.vue')['default']
+    CreateBucketDialog: typeof import('./src/components/kv/dialogs/CreateBucketDialog.vue')['default']
     KvMain: typeof import('./src/components/kv/KvMain.vue')['default']
+    NButton: typeof import('naive-ui')['NButton']
     NLayout: typeof import('naive-ui')['NLayout']
     NLayoutHeader: typeof import('naive-ui')['NLayoutHeader']
     NLayoutSider: typeof import('naive-ui')['NLayoutSider']
+    NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NotFound: typeof import('./src/components/pages/NotFound.vue')['default']
     NSpace: typeof import('naive-ui')['NSpace']
     NTable: typeof import('naive-ui')['NTable']

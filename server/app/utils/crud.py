@@ -16,9 +16,10 @@ def upsert_kv(session: Session, key: str, value: str, bucketName: str) -> KvData
     )
     try:
         kv = session.scalars(statement).one()
+        if kv.value != value:
+            kv.updated_at = datetime.now()
         kv.value = value
         kv.bucket = bucketName
-        kv.updated_at = datetime.now()
     except NoResultFound:
         kv = KvData(key=key, value=value, updated_at=datetime.now(), bucket=bucketName)
     kv_copy = KvData(
