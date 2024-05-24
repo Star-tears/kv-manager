@@ -45,68 +45,12 @@ export type ValidationError = {
     type: string;
 };
 
-export type KvGetKvDataData = {
-    requestBody: BucketItemBase;
-};
-
-export type KvGetKvDataResponse = ResponseBase;
-
-export type KvGetKvRecordData = {
-    requestBody: KvItemBase;
-};
-
-export type KvGetKvRecordResponse = ResponseBase;
-
-export type KvUpdateKvData = {
-    requestBody: KvItem;
-};
-
-export type KvUpdateKvResponse = ResponseBase;
-
-export type KvDeleteKvData = {
-    requestBody: KvItemBase;
-};
-
-export type KvDeleteKvResponse = ResponseBase;
-
-export type KvGetBucketListResponse = ResponseBase;
-
-export type KvCreateBucketData = {
-    requestBody: BucketItemBase;
-};
-
-export type KvCreateBucketResponse = ResponseBase;
-
-export type KvCreateBucket1Data = {
-    requestBody: RenameBucketItem;
-};
-
-export type KvCreateBucket1Response = ResponseBase;
-
-export type KvDeleteBucketData = {
-    requestBody: BucketItemBase;
-};
-
-export type KvDeleteBucketResponse = ResponseBase;
-
-export type KvUploadFileData = {
-    formData: Body_kv_upload_file;
-};
-
-export type KvUploadFileResponse = unknown;
-
-export type KvDownloadFileData = {
-    requestBody: BucketFile;
-};
-
-export type KvDownloadFileResponse = unknown;
-
-export type IndexHomeResponse = string;
-
 export type $OpenApiTs = {
     '/api/v1/kv/get_kv_data': {
         get: {
-            req: KvGetKvDataData;
+            req: {
+                requestBody: BucketItemBase;
+            };
             res: {
                 /**
                  * Successful Response
@@ -121,7 +65,9 @@ export type $OpenApiTs = {
     };
     '/api/v1/kv/get_kv_record': {
         get: {
-            req: KvGetKvRecordData;
+            req: {
+                requestBody: KvItemBase;
+            };
             res: {
                 /**
                  * Successful Response
@@ -136,7 +82,9 @@ export type $OpenApiTs = {
     };
     '/api/v1/kv/update_kv': {
         post: {
-            req: KvUpdateKvData;
+            req: {
+                requestBody: KvItem;
+            };
             res: {
                 /**
                  * Successful Response
@@ -151,7 +99,9 @@ export type $OpenApiTs = {
     };
     '/api/v1/kv/delete_kv': {
         post: {
-            req: KvDeleteKvData;
+            req: {
+                requestBody: KvItemBase;
+            };
             res: {
                 /**
                  * Successful Response
@@ -176,7 +126,9 @@ export type $OpenApiTs = {
     };
     '/api/v1/kv/create_bucket': {
         post: {
-            req: KvCreateBucketData;
+            req: {
+                requestBody: BucketItemBase;
+            };
             res: {
                 /**
                  * Successful Response
@@ -191,7 +143,9 @@ export type $OpenApiTs = {
     };
     '/api/v1/kv/rename_bucket': {
         post: {
-            req: KvCreateBucket1Data;
+            req: {
+                requestBody: RenameBucketItem;
+            };
             res: {
                 /**
                  * Successful Response
@@ -206,7 +160,9 @@ export type $OpenApiTs = {
     };
     '/api/v1/kv/delete_bucket': {
         post: {
-            req: KvDeleteBucketData;
+            req: {
+                requestBody: BucketItemBase;
+            };
             res: {
                 /**
                  * Successful Response
@@ -221,7 +177,9 @@ export type $OpenApiTs = {
     };
     '/api/v1/kv/upload-file': {
         post: {
-            req: KvUploadFileData;
+            req: {
+                formData: Body_kv_upload_file;
+            };
             res: {
                 /**
                  * Successful Response
@@ -236,7 +194,9 @@ export type $OpenApiTs = {
     };
     '/api/v1/kv/download-file': {
         get: {
-            req: KvDownloadFileData;
+            req: {
+                requestBody: BucketFile;
+            };
             res: {
                 /**
                  * Successful Response
@@ -246,6 +206,16 @@ export type $OpenApiTs = {
                  * Validation Error
                  */
                 422: HTTPValidationError;
+            };
+        };
+    };
+    '/api/v1/common/get_version': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: ResponseBase;
             };
         };
     };

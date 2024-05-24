@@ -20,10 +20,10 @@
   resolved "https://registry.yarnpkg.com/@antfu/utils/-/utils-0.7.8.tgz#86cb0974bcab7e64e29b57d6d9021102307257de"
   integrity sha512-rWQkqXRESdjXtc+7NRfK9lASQjpXJu1ayp7qi1d23zZorY+wBHVLHHoVcMsEnkqEBWTFqbztO7/QdJFzyEcLTg==
 
-"@apidevtools/json-schema-ref-parser@11.6.2":
-  version "11.6.2"
-  resolved "https://registry.yarnpkg.com/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-11.6.2.tgz#a7fd1b2b5a6d1bc3f8086ad20b5193d6c6434ed1"
-  integrity sha512-ENUdLLT04aDbbHCRwfKf8gR67AhV0CdFrOAtk+FcakBAgaq6ds3HLK9X0BCyiFUz8pK9uP+k6YZyJaGG7Mt7vQ==
+"@apidevtools/json-schema-ref-parser@11.5.5":
+  version "11.5.5"
+  resolved "https://registry.yarnpkg.com/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-11.5.5.tgz#05db5722e3a794e35565bab41dc1a3f94fbd6bb5"
+  integrity sha512-hv/aXDILyroHioVW27etFMV+IX6FyNn41YwbeGIAt5h/7fUTQvHI5w3ols8qYAT8aQt3kzexq5ZwxFDxNHIhdQ==
   dependencies:
     "@jsdevtools/ono" "^7.1.3"
     "@types/json-schema" "^7.0.15"
@@ -1208,15 +1208,15 @@
     "@floating-ui/utils" "^0.2.1"
     vue-demi ">=0.13.0"
 
-"@hey-api/openapi-ts@^0.46.2":
-  version "0.46.2"
-  resolved "https://registry.yarnpkg.com/@hey-api/openapi-ts/-/openapi-ts-0.46.2.tgz#bb1140249ac9d6b00238a3b0ee30edbc873f3e23"
-  integrity sha512-ccpZ2SSSlupw+Rj3bQMmIzpoUh+Xq9N3R29LgYJfIof5d76bDjkfeO4GcBg7j1NlQcElw4G8IjrOr/FOUENNiA==
+"@hey-api/openapi-ts@^0.42.1":
+  version "0.42.1"
+  resolved "https://registry.yarnpkg.com/@hey-api/openapi-ts/-/openapi-ts-0.42.1.tgz#024ef7e5404b2e508513d66484a4c41d38535f35"
+  integrity sha512-hLWNkTwvF0xdop8R6WTXNZRS+Nc4qPxf15Bad0Ft03rR/DGi4UkHtrjDsSo7ZqIZjl82mXNOxuX8j6ZS5VF2Gw==
   dependencies:
-    "@apidevtools/json-schema-ref-parser" "11.6.2"
+    "@apidevtools/json-schema-ref-parser" "11.5.5"
     c12 "1.10.0"
     camelcase "8.0.0"
-    commander "12.1.0"
+    commander "12.0.0"
     handlebars "4.7.8"
 
 "@humanwhocodes/config-array@^0.11.14":
@@ -2183,10 +2183,10 @@ combined-stream@^1.0.8:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@12.1.0:
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-12.1.0.tgz#01423b36f501259fdaac4d0e4d60c96c991585d3"
-  integrity sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==
+commander@12.0.0:
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-12.0.0.tgz#b929db6df8546080adfd004ab215ed48cf6f2592"
+  integrity sha512-MwVNWlYjDTtOjX5PiD7o5pK0UrFU/OYgcJfjjK4RaHZETNtjJqrZa9Y9ds88+A+f+d5lv+561eZ+yCKoS3gbAA==
 
 commander@^2.20.0:
   version "2.20.3"

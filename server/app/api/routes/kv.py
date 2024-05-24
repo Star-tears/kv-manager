@@ -64,7 +64,7 @@ def create_bucket(data: BucketItemBase):
 
 
 @router.post("/rename_bucket", response_model=ResponseBase)
-def create_bucket(data: RenameBucketItem, session: SessionDep):
+def rename_bucket(data: RenameBucketItem, session: SessionDep):
     old_path = os.path.join(Config.WEBSERVER, "kv", "buckets", data.bucketName)
     new_path = os.path.join(Config.WEBSERVER, "kv", "buckets", data.newBucketName)
     rename_file(old_path, new_path)
