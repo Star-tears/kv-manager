@@ -7,8 +7,16 @@
       <n-layout-sider content-style="padding: 24px;" width="80" :native-scrollbar="false" bordered>
         <SiderBar />
       </n-layout-sider>
-      <n-layout content-style="padding: 24px;" :native-scrollbar="false">
-        <KvMain />
+      <n-layout has-sider sider-placement="right">
+        <n-layout content-style="padding: 24px;" :native-scrollbar="false"><KvMain /> </n-layout>
+
+        <n-layout-sider
+          content-style="padding: 24px;"
+          width="400"
+          :native-scrollbar="false"
+          bordered
+        >
+        </n-layout-sider>
       </n-layout>
     </n-layout>
   </n-layout>

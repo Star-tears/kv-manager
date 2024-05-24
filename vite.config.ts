@@ -5,8 +5,9 @@ import vue from '@vitejs/plugin-vue';
 import VueDevTools from 'vite-plugin-vue-devtools';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
-import legacy from '@vitejs/plugin-legacy';
+// import legacy from '@vitejs/plugin-legacy';
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
+import { VxeTableResolver } from '@vxecli/import-unplugin-vue-components';
 import tailwind from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 
@@ -18,9 +19,9 @@ export default defineConfig({
     }
   },
   plugins: [
-    legacy({
-      modernPolyfills: true
-    }),
+    // legacy({
+    //   modernPolyfills: true
+    // }),
     vue(),
     VueDevTools(),
     AutoImport({
@@ -32,12 +33,22 @@ export default defineConfig({
       ]
     }),
     Components({
-      resolvers: [NaiveUiResolver()]
+      resolvers: [NaiveUiResolver(), VxeTableResolver()]
     })
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  },
+  server: {
+    proxy: {
+      '^/api': {
+        target: 'http://localhost:11028/api',
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        changeOrigin: true,
+        ws: true
+      }
     }
   }
 });

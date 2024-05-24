@@ -1,8 +1,12 @@
 <template>
   <div>
-    <NConfigProvider :theme="darkTheme">
+    <NConfigProvider>
       <NDialogProvider>
-        <slot />
+        <n-message-provider>
+          <NNotificationProvider>
+            <slot />
+          </NNotificationProvider>
+        </n-message-provider>
       </NDialogProvider>
       <NGlobalStyle />
     </NConfigProvider>
@@ -10,12 +14,18 @@
 </template>
 
 <script setup lang="ts">
-import { NConfigProvider, NGlobalStyle, NDialogProvider } from 'naive-ui';
+import {
+  NConfigProvider,
+  NGlobalStyle,
+  NDialogProvider,
+  NMessageProvider,
+  NNotificationProvider
+} from 'naive-ui';
 import { darkTheme } from 'naive-ui';
 import { useColorMode } from '@vueuse/core';
 
 const mode = useColorMode();
-mode.value = 'dark';
+mode.value = 'light';
 </script>
 
 <style scoped></style>

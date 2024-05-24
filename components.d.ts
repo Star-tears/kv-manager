@@ -8,10 +8,14 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('./src/components/ui/button/Button.vue')['default']
+    CreateBucketDialog: typeof import('./src/components/kv/dialogs/CreateBucketDialog.vue')['default']
     KvMain: typeof import('./src/components/kv/KvMain.vue')['default']
+    NButton: typeof import('naive-ui')['NButton']
+    NInput: typeof import('naive-ui')['NInput']
     NLayout: typeof import('naive-ui')['NLayout']
     NLayoutHeader: typeof import('naive-ui')['NLayoutHeader']
     NLayoutSider: typeof import('naive-ui')['NLayoutSider']
+    NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NotFound: typeof import('./src/components/pages/NotFound.vue')['default']
     NSpace: typeof import('naive-ui')['NSpace']
     NTable: typeof import('naive-ui')['NTable']
@@ -22,5 +26,10 @@ declare module 'vue' {
     Toggle: typeof import('./src/components/ui/toggle/Toggle.vue')['default']
     ToggleGroup: typeof import('./src/components/ui/toggle-group/ToggleGroup.vue')['default']
     ToggleGroupItem: typeof import('./src/components/ui/toggle-group/ToggleGroupItem.vue')['default']
+    VxeColumn: typeof import('vxe-table/es/column/index.js')['VxeColumn']
+    VxeInput: typeof import('vxe-table/es/input/index.js')['VxeInput']
+    VxeOption: typeof import('vxe-table/es/option/index.js')['VxeOption']
+    VxeSelect: typeof import('vxe-table/es/select/index.js')['VxeSelect']
+    VxeTable: typeof import('vxe-table/es/table/index.js')['VxeTable']
   }
 }
