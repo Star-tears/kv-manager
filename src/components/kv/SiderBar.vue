@@ -22,8 +22,6 @@
 </template>
 
 <script setup lang="ts">
-import { FontBoldIcon, FontItalicIcon, UnderlineIcon } from '@radix-icons/vue';
-
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { NAvatar } from 'naive-ui';
 import { useThemeVars } from 'naive-ui';

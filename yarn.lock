@@ -1843,6 +1843,11 @@
   dependencies:
     vue-demi ">=0.14.7"
 
+"@vxecli/import-unplugin-vue-components@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@vxecli/import-unplugin-vue-components/-/import-unplugin-vue-components-1.0.2.tgz#2d7d9a8e841f830b35c2e57030a0a635b05a8983"
+  integrity sha512-lwzDQFqaZ53n84EjeE8v0wd09cYLwMB9+4A3qxxDlwvNjuFAfOEFeg5AbFJsSvFvZcbbwa9P+5VnusjU7FUsnQ==
+
 acorn-jsx@^5.3.2:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"
@@ -2352,6 +2357,11 @@ doctrine@^3.0.0:
   integrity sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==
   dependencies:
     esutils "^2.0.2"
+
+dom-zindex@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/dom-zindex/-/dom-zindex-1.0.2.tgz#2fb836c006d8d09af5663f84d50221a917592058"
+  integrity sha512-QceDZxPlvzhpg6e8szxNiKPUt5Y9SfFTe3nZy8og3JoPQPlAlzBzHa/lhDkhgeG3cjbKyQcuoic+wymF0o0d1Q==
 
 dotenv@^16.4.5:
   version "16.4.5"
@@ -4381,6 +4391,14 @@ vueuc@^0.4.58:
     vdirs "^0.1.4"
     vooks "^0.2.4"
 
+vxe-table@^4.6.16:
+  version "4.6.16"
+  resolved "https://registry.yarnpkg.com/vxe-table/-/vxe-table-4.6.16.tgz#f0a12c7fc968f50d3e406814377ecc49a172d1fa"
+  integrity sha512-Svm2FE5PNYpTPyUP33OBiJesvk+RCpKfD/92mvwFY9ImMz0wQKTAFDmV//OoRFPRSLCMgIu/yOUODuvvSFyUvQ==
+  dependencies:
+    dom-zindex "^1.0.2"
+    xe-utils "^3.5.26"
+
 webpack-sources@^3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.2.3.tgz#2d4daab8451fd4b240cc27055ff6a0c2ccea0cde"
@@ -4430,6 +4448,11 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
+
+xe-utils@^3.5.26:
+  version "3.5.26"
+  resolved "https://registry.yarnpkg.com/xe-utils/-/xe-utils-3.5.26.tgz#8b3255cc74c5d251e06cfb7a665ac3ed0931a9f3"
+  integrity sha512-u9R7RqWDumamToEelrCv2nVA2PBJSPPUubvmiMcuHeFxwbYeBsouoi/opejmr7AdPlSj92FifF7IKFzFrczU7w==
 
 xml-name-validator@^4.0.0:
   version "4.0.0"
