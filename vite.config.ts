@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue';
 import VueDevTools from 'vite-plugin-vue-devtools';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
-import legacy from '@vitejs/plugin-legacy';
+// import legacy from '@vitejs/plugin-legacy';
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import { VxeTableResolver } from '@vxecli/import-unplugin-vue-components';
 import tailwind from 'tailwindcss';
@@ -19,9 +19,9 @@ export default defineConfig({
     }
   },
   plugins: [
-    legacy({
-      modernPolyfills: true
-    }),
+    // legacy({
+    //   modernPolyfills: true
+    // }),
     vue(),
     VueDevTools(),
     AutoImport({

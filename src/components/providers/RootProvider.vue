@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NConfigProvider :theme="darkTheme">
+    <NConfigProvider>
       <NDialogProvider>
         <slot />
       </NDialogProvider>
@@ -15,7 +15,7 @@ import { darkTheme } from 'naive-ui';
 import { useColorMode } from '@vueuse/core';
 
 const mode = useColorMode();
-mode.value = 'dark';
+mode.value = 'light';
 </script>
 
 <style scoped></style>
