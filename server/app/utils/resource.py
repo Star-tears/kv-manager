@@ -42,3 +42,17 @@ def delete_folder(folder_path):
     except OSError as e:
         print(f"删除文件夹时发生错误: {e.strerror}")
         return False
+
+
+def rename_file(old_path, new_path):
+    """
+    重命名文件、文件夹
+    :param old_path: 旧文件路径
+    :param new_path: 新文件路径
+    """
+    # 使用os.rename()函数进行重命名操作
+    try:
+        os.rename(old_path, new_path)
+        print(f"文件'{old_path}'已成功重命名为'{new_path}'")
+    except OSError as e:
+        print(f"重命名文件时发生错误: {e.strerror}")

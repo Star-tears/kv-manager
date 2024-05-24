@@ -1,10 +1,21 @@
 import os
 from app.api.deps import SessionDep
 from app.common.config import Config
-from app.models.kv_items import BucketFile, BucketItemBase, KvItemBase
+from app.models.kv_items import (
+    BucketFile,
+    BucketItemBase,
+    KvItem,
+    KvItemBase,
+    RenameBucketItem,
+)
 from app.models.response import ResponseBase
 from app.models.sql_models import KvData
-from app.utils.resource import create_folder, delete_folder
+from app.utils.resource import (
+    create_folder,
+    delete_folder,
+    get_folder_list,
+    rename_file,
+)
 from fastapi import APIRouter, Depends, File, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 
@@ -21,9 +32,22 @@ def get_kv_data(data: BucketItemBase, session: SessionDep):
 
 
 @router.post("/update_kv", response_model=ResponseBase)
-def update_kv(data: KvItemBase, session: SessionDep):
+def update_kv(data: KvItem, session: SessionDep):
     kv_data = crud.upsert_kv(session, data.key, data.value, data.bucketName)
     return ResponseBase(code=0, data=kv_data)
+
+
+@router.post("/delete_kv", response_model=ResponseBase)
+def delete_kv(data: KvItemBase, session: SessionDep):
+    crud.delete_kv(session, data.key, data.bucketName)
+    return ResponseBase(code=0, data={})
+
+
+@router.get("/get_bucket_list", response_model=ResponseBase)
+def get_bucket_list():
+    path = os.path.join(Config.WEBSERVER, "kv", "buckets")
+    folder_list = get_folder_list(path)
+    return ResponseBase(code=0, data=folder_list)
 
 
 @router.post("/create_bucket", response_model=ResponseBase)
@@ -31,6 +55,18 @@ def create_bucket(data: BucketItemBase):
     path = os.path.join(Config.WEBSERVER, "kv", "buckets", data.bucketName)
     result = create_folder(path)
     return ResponseBase(code=0, data={"message": f"Bucket create result: {result}"})
+
+
+@router.post("/rename_bucket", response_model=ResponseBase)
+def create_bucket(data: RenameBucketItem, session: SessionDep):
+    old_path = os.path.join(Config.WEBSERVER, "kv", "buckets", data.bucketName)
+    new_path = os.path.join(Config.WEBSERVER, "kv", "buckets", data.newBucketName)
+    rename_file(old_path, new_path)
+    crud.rename_bucket(session, data.bucketName, data.newBucketName)
+    return ResponseBase(
+        code=0,
+        data={"message": f"Bucket {data.bucketName} rename to {data.newBucketName}"},
+    )
 
 
 @router.post("/delete_bucket", response_model=ResponseBase)

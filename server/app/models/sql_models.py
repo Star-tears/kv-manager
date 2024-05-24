@@ -8,11 +8,7 @@ from sqlmodel import Field, SQLModel
 class KvData(SQLModel, table=True):
     key: str = Field(primary_key=True)
     value: str
-    updated_at: Optional[datetime] = Field(
-        default=datetime.now(),
-        sa_column_kwargs={"onupdate": datetime.now()},
-        nullable=False,
-    )
+    updated_at: datetime
     bucket: Optional[str] = Field(default=None, nullable=True)
 
 
@@ -22,8 +18,5 @@ class KvRecord(SQLModel, table=True):
     )
     key: str
     value: str
-    updated_at: Optional[datetime] = Field(
-        default=datetime.now(),
-        nullable=False,
-    )
+    updated_at: datetime
     bucket: Optional[str] = Field(default=None, nullable=True)

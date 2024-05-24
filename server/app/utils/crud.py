@@ -1,5 +1,6 @@
+from datetime import datetime
 from app.models.sql_models import KvData, KvRecord
-from sqlmodel import Session, and_, select, delete
+from sqlmodel import Session, and_, select, delete, update
 from sqlalchemy.exc import NoResultFound
 
 
@@ -17,11 +18,15 @@ def upsert_kv(session: Session, key: str, value: str, bucketName: str) -> KvData
         kv = session.scalars(statement).one()
         kv.value = value
         kv.bucket = bucketName
+        kv.updated_at = datetime.now()
     except NoResultFound:
-        kv = KvData(key=key, value=value, bucket=bucketName)
+        kv = KvData(key=key, value=value, updated_at=datetime.now(), bucket=bucketName)
+    kv_copy = KvData(
+        key=kv.key, value=kv.value, updated_at=kv.updated_at, bucket=kv.bucket
+    )
     session.merge(kv)
     session.commit()
-    create_kv_record(session, kv)
+    create_kv_record(session, kv_copy)
     return kv
 
 
@@ -71,3 +76,20 @@ def delete_bucket(session: Session, bucketName: str) -> None:
     delete_kv_record = delete(KvRecord).where(KvRecord.bucket == bucketName)
     session.exec(delete_kv_record)
     session.commit()
+
+
+def rename_bucket(session: Session, oldBucketName: str, newBucketName: str) -> None:
+    statement = (
+        update(KvData)
+        .where(KvData.bucket == oldBucketName)
+        .values(bucket=newBucketName)
+    )
+    statement2 = (
+        update(KvRecord)
+        .where(KvRecord.bucket == oldBucketName)
+        .values(bucket=newBucketName)
+    )
+    # 执行更新
+    session.exec(statement)
+    session.exec(statement2)
+    session.commit()  # 提交事务以保存更改
