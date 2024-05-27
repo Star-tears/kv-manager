@@ -7,6 +7,56 @@ import type { $OpenApiTs } from './types.gen';
 
 export class KvService {
     /**
+     * Create Lang
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static kvCreateLang(data: $OpenApiTs['/api/v1/kv/create_lang']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/create_lang']['post']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/kv/create_lang',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Get Lang List
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static kvGetLangList(): CancelablePromise<$OpenApiTs['/api/v1/kv/get_lang_list']['get']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/kv/get_lang_list'
+        });
+    }
+    
+    /**
+     * Update Kv
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static kvUpdateKv(data: $OpenApiTs['/api/v1/kv/update_kv']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/update_kv']['post']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/kv/update_kv',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
      * Get Kv Data
      * @param data The data for the request.
      * @param data.requestBody
@@ -45,25 +95,6 @@ export class KvService {
     }
     
     /**
-     * Update Kv
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ResponseBase Successful Response
-     * @throws ApiError
-     */
-    public static kvUpdateKv(data: $OpenApiTs['/api/v1/kv/update_kv']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/update_kv']['post']['res'][200]> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/kv/update_kv',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
      * Delete Kv
      * @param data The data for the request.
      * @param data.requestBody
@@ -74,75 +105,6 @@ export class KvService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/kv/delete_kv',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Get Bucket List
-     * @returns ResponseBase Successful Response
-     * @throws ApiError
-     */
-    public static kvGetBucketList(): CancelablePromise<$OpenApiTs['/api/v1/kv/get_bucket_list']['get']['res'][200]> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/kv/get_bucket_list'
-        });
-    }
-    
-    /**
-     * Create Bucket
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ResponseBase Successful Response
-     * @throws ApiError
-     */
-    public static kvCreateBucket(data: $OpenApiTs['/api/v1/kv/create_bucket']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/create_bucket']['post']['res'][200]> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/kv/create_bucket',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Rename Bucket
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ResponseBase Successful Response
-     * @throws ApiError
-     */
-    public static kvRenameBucket(data: $OpenApiTs['/api/v1/kv/rename_bucket']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/rename_bucket']['post']['res'][200]> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/kv/rename_bucket',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Delete Bucket
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ResponseBase Successful Response
-     * @throws ApiError
-     */
-    public static kvDeleteBucket(data: $OpenApiTs['/api/v1/kv/delete_bucket']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/delete_bucket']['post']['res'][200]> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/kv/delete_bucket',
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
@@ -172,20 +134,13 @@ export class KvService {
     
     /**
      * Download File
-     * @param data The data for the request.
-     * @param data.requestBody
      * @returns unknown Successful Response
      * @throws ApiError
      */
-    public static kvDownloadFile(data: $OpenApiTs['/api/v1/kv/download-file']['get']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/download-file']['get']['res'][200]> {
+    public static kvDownloadFile(): CancelablePromise<$OpenApiTs['/api/v1/kv/download-file']['get']['res'][200]> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/kv/download-file',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
+            url: '/api/v1/kv/download-file'
         });
     }
     
