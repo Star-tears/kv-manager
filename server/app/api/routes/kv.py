@@ -2,21 +2,20 @@ import os
 from app.api.deps import SessionDep
 from app.common.config import Config
 from app.models.kv_items import (
-    BucketFile,
-    BucketItemBase,
+    KvIdItem,
     KvItem,
-    KvItemBase,
-    RenameBucketItem,
+    KvRecordItem,
+    LangKv,
+    LanguageItemBase,
 )
 from app.models.response import ResponseBase
-from app.models.sql_models import KvData
 from app.utils.resource import (
     create_folder,
     delete_folder,
     get_folder_list,
     rename_file,
 )
-from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi import APIRouter, File, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 
 from app.utils import crud
@@ -25,62 +24,42 @@ from app.utils import crud
 router = APIRouter()
 
 
-@router.get("/get_kv_data", response_model=ResponseBase)
-def get_kv_data(data: BucketItemBase, session: SessionDep):
-    kv_data = crud.get_kv(session, data.bucketName)
-    return ResponseBase(code=0, data=kv_data)
+@router.post("/create_lang", response_model=ResponseBase)
+def create_lang(data: LanguageItemBase, session: SessionDep):
+    result = crud.create_lang(session, data.lang)
+    return ResponseBase(code=0, data=result)
 
 
-@router.get("/get_kv_record", response_model=ResponseBase)
-def get_kv_record(data: KvItemBase, session: SessionDep):
-    kv_record = crud.get_kv_record(session, data.key, data.bucketName)
-    return ResponseBase(code=0, data=kv_record)
+@router.get("/get_lang_list", response_model=ResponseBase)
+def get_lang_list(session: SessionDep):
+    result = crud.get_lang_list(session)
+    return ResponseBase(code=0, data=result)
 
 
 @router.post("/update_kv", response_model=ResponseBase)
 def update_kv(data: KvItem, session: SessionDep):
-    kv_data = crud.upsert_kv(session, data.key, data.value, data.bucketName)
+    kv_data = crud.upsert_kv(
+        session, data.key, data.value, data.langKey, data.langValue, data.kvId
+    )
     return ResponseBase(code=0, data=kv_data)
 
 
+@router.get("/get_kv_data", response_model=ResponseBase)
+def get_kv_data(data: LangKv, session: SessionDep):
+    kv_data = crud.get_kv(session, data.langKey, data.langValue)
+    return ResponseBase(code=0, data=kv_data)
+
+
+@router.get("/get_kv_record", response_model=ResponseBase)
+def get_kv_record(data: KvRecordItem, session: SessionDep):
+    kv_record = crud.get_kv_record(session, data.langValue, data.kvId)
+    return ResponseBase(code=0, data=kv_record)
+
+
 @router.post("/delete_kv", response_model=ResponseBase)
-def delete_kv(data: KvItemBase, session: SessionDep):
-    crud.delete_kv(session, data.key, data.bucketName)
-    return ResponseBase(code=0, data={})
-
-
-@router.get("/get_bucket_list", response_model=ResponseBase)
-def get_bucket_list():
-    path = os.path.join(Config.WEBSERVER, "kv", "buckets")
-    folder_list = get_folder_list(path)
-    return ResponseBase(code=0, data=folder_list)
-
-
-@router.post("/create_bucket", response_model=ResponseBase)
-def create_bucket(data: BucketItemBase):
-    path = os.path.join(Config.WEBSERVER, "kv", "buckets", data.bucketName)
-    result = create_folder(path)
-    return ResponseBase(code=0, data={"message": f"Bucket create result: {result}"})
-
-
-@router.post("/rename_bucket", response_model=ResponseBase)
-def rename_bucket(data: RenameBucketItem, session: SessionDep):
-    old_path = os.path.join(Config.WEBSERVER, "kv", "buckets", data.bucketName)
-    new_path = os.path.join(Config.WEBSERVER, "kv", "buckets", data.newBucketName)
-    rename_file(old_path, new_path)
-    crud.rename_bucket(session, data.bucketName, data.newBucketName)
-    return ResponseBase(
-        code=0,
-        data={"message": f"Bucket {data.bucketName} rename to {data.newBucketName}"},
-    )
-
-
-@router.post("/delete_bucket", response_model=ResponseBase)
-def delete_bucket(data: BucketItemBase, session: SessionDep):
-    path = os.path.join(Config.WEBSERVER, "kv", "buckets", data.bucketName)
-    crud.delete_bucket(session, data.bucketName)
-    result = delete_folder(path)
-    return ResponseBase(code=0, data={"message": f"Bucket delete result: {result}"})
+def delete_kv(data: KvIdItem, session: SessionDep):
+    msg = crud.delete_kv(session, data.kvId)
+    return ResponseBase(code=0, data={"msg": msg})
 
 
 @router.post("/upload-file")
@@ -116,11 +95,10 @@ async def upload_file(file: UploadFile = File(...)):
 
 
 @router.get("/download-file")
-async def download_file(data: BucketFile):
+async def download_file():
     # 假设文件存储在"uploaded_files/"目录下
-    file_path = os.path.join(
-        Config.WEBSERVER, "kv", "buckets", data.bucketName, data.relativePath
-    )
+    # todo
+    file_path = os.path.join(Config.WEBSERVER, "kv", "buckets")
     # 检查文件是否存在
     if not os.path.exists(file_path):
         return {"error": "File not found."}

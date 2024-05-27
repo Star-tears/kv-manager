@@ -1,21 +1,30 @@
 from pydantic import BaseModel
 
 
-class BucketItemBase(BaseModel):
-    bucketName: str
+class KvIdItem(BaseModel):
+    kvId: int
 
 
-class KvItemBase(BucketItemBase):
+class KvItemBase(BaseModel):
     key: str
+    langKey: str
 
 
 class KvItem(KvItemBase):
     value: str
+    langValue: str
+    kvId: int | None = None
 
 
-class BucketFile(BucketItemBase):
-    relativePath: str
+class KvRecordItem(BaseModel):
+    langValue: str
+    kvId: int
 
 
-class RenameBucketItem(BucketItemBase):
-    newBucketName: str
+class LangKv(BaseModel):
+    langKey: str
+    langValue: str
+
+
+class LanguageItemBase(BaseModel):
+    lang: str
