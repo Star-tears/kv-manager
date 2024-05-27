@@ -142,6 +142,23 @@ export type $OpenApiTs = {
             };
         };
     };
+    '/api/v1/kv/get_all_null_value_kv': {
+        post: {
+            req: {
+                requestBody: LanguageItemBase;
+            };
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: ResponseBase;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
     '/api/v1/kv/upload-file': {
         post: {
             req: {

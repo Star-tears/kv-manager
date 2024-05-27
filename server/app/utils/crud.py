@@ -1,6 +1,6 @@
 from datetime import datetime
 from app.models.sql_models import KvData, KvId, KvRecord, Language
-from sqlmodel import Session, and_, select, delete, update, alias
+from sqlmodel import Session, and_, select, delete, update, or_
 from sqlalchemy.orm import aliased
 from sqlalchemy.exc import NoResultFound
 
@@ -147,3 +147,25 @@ def delete_kv(session: Session, kv_id: int):
         return f"KvId {kv_id} and associated KvData and KvRecord deleted successfully"
     else:
         return f"No KvId found with id {kv_id}"
+
+
+def get_null_value_kv(session: Session, lang_key: str, lang_value: str):
+    B1 = aliased(KvData)
+    B2 = aliased(KvData)
+    query = (
+        select(
+            KvId.id,
+            B1.value.label("key"),
+            B2.value.label("value"),
+            B1.language.label("lang_key"),
+            B2.language.label("lang_value"),
+        )
+        .outerjoin(B1, (KvId.id == B1.kv_id) & (B1.language == lang_key))
+        .outerjoin(B2, (KvId.id == B2.kv_id) & (B2.language == lang_value))
+        .where(or_(B2.value.is_(None), B2.value == ""))
+    )
+
+    # 执行查询并获取结果
+    results = session.exec(query).all()
+    results_dict = [row._asdict() for row in results]
+    return results_dict

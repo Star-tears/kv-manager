@@ -62,6 +62,18 @@ def delete_kv(data: KvIdItem, session: SessionDep):
     return ResponseBase(code=0, data={"msg": msg})
 
 
+@router.post("/get_all_null_value_kv", response_model=ResponseBase)
+def get_all_null_value_kv(data: LanguageItemBase, session: SessionDep):
+    langList = crud.get_lang_list(session)
+    null_kv_data = []
+    for lang in langList:
+        kv_data = crud.get_null_value_kv(session, data.lang, lang.lang)
+        for kv in kv_data:
+            kv["lang_value"] = lang.lang
+        null_kv_data.extend(kv_data)
+    return ResponseBase(code=0, data=null_kv_data)
+
+
 @router.post("/upload-file")
 async def upload_file(file: UploadFile = File(...)):
     try:

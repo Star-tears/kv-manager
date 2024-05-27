@@ -114,6 +114,25 @@ export class KvService {
     }
     
     /**
+     * Get All Null Value Kv
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static kvGetAllNullValueKv(data: $OpenApiTs['/api/v1/kv/get_all_null_value_kv']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/get_all_null_value_kv']['post']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/kv/get_all_null_value_kv',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
      * Upload File
      * @param data The data for the request.
      * @param data.formData
