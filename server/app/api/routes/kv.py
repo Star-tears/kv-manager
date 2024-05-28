@@ -1,3 +1,4 @@
+import time
 import os
 from app.api.deps import SessionDep
 from app.common.config import Config
@@ -6,6 +7,7 @@ from app.models.kv_items import (
     KvItem,
     KvRecordItem,
     LangKv,
+    LangWithPath,
     LanguageItemBase,
 )
 from app.models.response import ResponseBase
@@ -15,6 +17,7 @@ from app.utils.resource import (
     get_folder_list,
     rename_file,
 )
+import app.utils.kv_helper as kv_helper
 from fastapi import APIRouter, File, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 
@@ -72,6 +75,33 @@ def get_all_null_value_kv(data: LanguageItemBase, session: SessionDep):
             kv["lang_value"] = lang.lang
         null_kv_data.extend(kv_data)
     return ResponseBase(code=0, data=null_kv_data)
+
+
+@router.post("/upload_new_lang", response_model=ResponseBase)
+def upload_new_lang(data: LangWithPath, session: SessionDep):
+    crud.create_lang(session, "English")
+    crud.create_lang(session, data.lang)
+    file_path = os.path.join(data.path)
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            for line in file:
+                kv_list = [s.strip() for s in line.split("~-~")]
+                if len(kv_list) == 2:
+                    crud.upsert_kv_with_no_commit(
+                        session, kv_list[0], kv_list[1], "English", data.lang
+                    )
+        session.commit()
+        msg = "Upload successfully"
+    except Exception as e:
+        msg = e
+    return ResponseBase(code=0, data={"msg": msg})
+
+
+@router.post("/gen_ts", response_model=ResponseBase)
+def gen_ts(data: LanguageItemBase, session: SessionDep):
+    file_path = os.path.join(Config.WEBSERVER, "kv", "downloads", f"{data.lang}.ts")
+    kv_helper.gen_ts(session, data.lang, file_path)
+    return ResponseBase(code=0, data={"file_path": f"{file_path}"})
 
 
 @router.post("/upload-file")

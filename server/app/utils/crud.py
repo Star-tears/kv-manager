@@ -54,6 +54,37 @@ def upsert_kv(
     return kv_update
 
 
+def upsert_kv_with_no_commit(
+    session: Session,
+    key: str,
+    value: str,
+    lang_key: str,
+    lang_value: str,
+    kv_id: int = None,
+):
+    if kv_id is not None:
+        upsert_kv_data_with_no_commit(
+            session, KvData(value=value, language=lang_value, kv_id=kv_id)
+        )
+    else:
+        statement = select(KvData).where(
+            and_(KvData.value == key, KvData.language == lang_key)
+        )
+        try:
+            kv = session.scalars(statement).one()
+            upsert_kv_data_with_no_commit(
+                session, KvData(value=value, language=lang_value, kv_id=kv.kv_id)
+            )
+        except NoResultFound:
+            kvid = create_kvid_with_no_commit(session)
+            upsert_kv_data_with_no_commit(
+                session, KvData(value=key, language=lang_key, kv_id=kvid.id)
+            )
+            upsert_kv_data_with_no_commit(
+                session, KvData(value=value, language=lang_value, kv_id=kvid.id)
+            )
+
+
 def upsert_kv_data(session: Session, kv_data: KvData):
     statement = select(KvData).where(
         and_(KvData.language == kv_data.language, KvData.kv_id == kv_data.kv_id)
@@ -79,11 +110,40 @@ def upsert_kv_data(session: Session, kv_data: KvData):
     return kv
 
 
+def upsert_kv_data_with_no_commit(session: Session, kv_data: KvData):
+    statement = select(KvData).where(
+        and_(KvData.language == kv_data.language, KvData.kv_id == kv_data.kv_id)
+    )
+    try:
+        kv = session.scalars(statement).one()
+        if kv.value != kv_data.value:
+            kv.updated_at = datetime.now()
+            kv.value = kv_data.value
+            create_kv_record_with_no_commit(session, kv)
+    except NoResultFound:
+        kv = KvData(
+            value=kv_data.value,
+            language=kv_data.language,
+            kv_id=kv_data.kv_id,
+            updated_at=datetime.now(),
+        )
+        session.add(kv)
+        create_kv_record_with_no_commit(session, kv)
+    session.merge(kv)
+
+
 def create_kvid(session: Session) -> KvId:
     new_kv_id = KvId()
     session.add(new_kv_id)
     session.commit()
     session.refresh(new_kv_id)
+    return new_kv_id
+
+
+def create_kvid_with_no_commit(session: Session) -> KvId:
+    new_kv_id = KvId()
+    session.add(new_kv_id)
+    session.flush()
     return new_kv_id
 
 
@@ -130,6 +190,27 @@ def create_kv_record(session: Session, kv_data: KvData):
         session.commit()
 
 
+def create_kv_record_with_no_commit(session: Session, kv_data: KvData):
+    statement = select(KvRecord).where(
+        and_(
+            KvRecord.language == kv_data.language,
+            KvRecord.value == kv_data.value,
+            KvRecord.updated_at == kv_data.updated_at,
+            KvRecord.kv_id == kv_data.kv_id,
+        )
+    )
+    try:
+        kv_record = session.scalars(statement).one()
+    except NoResultFound:
+        kv_record = KvRecord(
+            language=kv_data.language,
+            value=kv_data.value,
+            updated_at=kv_data.updated_at,
+            kv_id=kv_data.kv_id,
+        )
+        session.add(kv_record)
+
+
 def get_kv_record(session: Session, lang_value: str, kv_id: int):
     statement = select(KvRecord).where(
         and_(KvRecord.language == lang_value, KvRecord.kv_id == kv_id)
@@ -163,6 +244,25 @@ def get_null_value_kv(session: Session, lang_key: str, lang_value: str):
         .outerjoin(B1, (KvId.id == B1.kv_id) & (B1.language == lang_key))
         .outerjoin(B2, (KvId.id == B2.kv_id) & (B2.language == lang_value))
         .where(or_(B2.value.is_(None), B2.value == ""))
+    )
+
+    # 执行查询并获取结果
+    results = session.exec(query).all()
+    results_dict = [row._asdict() for row in results]
+    return results_dict
+
+
+def get_gen_kv(session: Session, lang_value: str, lang_key: str = "English"):
+    B1 = aliased(KvData)
+    B2 = aliased(KvData)
+    query = (
+        select(
+            KvId.id,
+            B1.value.label("key"),
+            B2.value.label("value"),
+        )
+        .outerjoin(B1, (KvId.id == B1.kv_id) & (B1.language == lang_key))
+        .outerjoin(B2, (KvId.id == B2.kv_id) & (B2.language == lang_value))
     )
 
     # 执行查询并获取结果

@@ -28,3 +28,7 @@ class LangKv(BaseModel):
 
 class LanguageItemBase(BaseModel):
     lang: str
+
+
+class LangWithPath(LanguageItemBase):
+    path: str
