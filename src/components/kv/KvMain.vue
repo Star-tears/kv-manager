@@ -66,10 +66,18 @@ watch(kvItemList, () => {
 });
 
 const historyClicked = (row: KvItem) => {
-  console.log(row);
   dialog.success({
     title: '历史记录',
-    content: () => h(KvHisDialog, null),
+    content: () =>
+      h(
+        KvHisDialog,
+        {
+          kv_id: row.kv_id,
+          kv_key: row.key,
+          lang_value: row.lang_value
+        },
+        null
+      ),
     style: {
       width: '80vw'
     }
@@ -81,8 +89,6 @@ const deleteClicked = (row: KvItem) => {
 };
 
 const valueChangeEvent = (row: KvItem) => {
-  console.log(row);
-  console.log(`${row} 触发 input 事件`);
   KvService.kvUpdateKv({
     requestBody: {
       key: row.key,

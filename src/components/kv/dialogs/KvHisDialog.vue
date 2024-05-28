@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-2">
     <div class="flex flex-row items-center gap-2">
       <div>键：</div>
-      <n-tag type="info">key</n-tag>
+      <n-tag type="info">{{ props.kv_key }}</n-tag>
     </div>
     <vxe-table
       border
@@ -16,7 +16,7 @@
       <vxe-column type="seq" width="40"></vxe-column>
       <vxe-column field="value" title="值"> </vxe-column>
       <vxe-column field="updated_at" title="更新时间"> </vxe-column>
-      <vxe-column title="控制">
+      <vxe-column title="控制" width="80">
         <template #default="{ row }">
           <div class="flex flex-row gap-2">
             <n-button type="info" ghost> 回滚 </n-button>
@@ -28,6 +28,8 @@
 </template>
 
 <script setup lang="ts">
+import { KvService } from '@/client';
+
 type KvRecord = {
   id: number;
   kv_id: number;
@@ -35,36 +37,29 @@ type KvRecord = {
   updated_at: string;
   language: string;
 };
-const list = ref<KvRecord[]>([
-  {
-    language: 'Ch',
-    value: '不支持该设备',
-    updated_at: '2024-05-28T13:49:35.914333',
-    id: 2,
-    kv_id: 1
-  },
-  {
-    language: 'Ch',
-    value: '不支持该设备1',
-    updated_at: '2024-05-28T16:39:25.459262',
-    id: 6397,
-    kv_id: 1
-  },
-  {
-    language: 'Ch',
-    value: '不支持该设备12',
-    updated_at: '2024-05-28T16:39:44.694133',
-    id: 6398,
-    kv_id: 1
-  },
-  {
-    language: 'Ch',
-    value: '不支持该设备123',
-    updated_at: '2024-05-28T16:40:31.475905',
-    id: 6399,
-    kv_id: 1
-  }
-]);
+
+type Props = {
+  kv_id: number;
+  kv_key: string;
+  lang_value: string;
+};
+
+const props = defineProps<Props>();
+
+const list = ref<KvRecord[]>(null);
+
+onMounted(() => {
+  KvService.kvGetKvRecord({
+    requestBody: {
+      langValue: props.lang_value,
+      kvId: props.kv_id
+    }
+  }).then((res) => {
+    if (res.code == 0) {
+      list.value = res.data as KvRecord[];
+    }
+  });
+});
 </script>
 
 <style scoped></style>

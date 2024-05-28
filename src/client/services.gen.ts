@@ -82,9 +82,9 @@ export class KvService {
      * @returns ResponseBase Successful Response
      * @throws ApiError
      */
-    public static kvGetKvRecord(data: $OpenApiTs['/api/v1/kv/get_kv_record']['get']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/get_kv_record']['get']['res'][200]> {
+    public static kvGetKvRecord(data: $OpenApiTs['/api/v1/kv/get_kv_record']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/get_kv_record']['post']['res'][200]> {
         return __request(OpenAPI, {
-            method: 'GET',
+            method: 'POST',
             url: '/api/v1/kv/get_kv_record',
             body: data.requestBody,
             mediaType: 'application/json',

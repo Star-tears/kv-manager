@@ -114,7 +114,7 @@ export type $OpenApiTs = {
         };
     };
     '/api/v1/kv/get_kv_record': {
-        get: {
+        post: {
             req: {
                 requestBody: KvRecordItem;
             };

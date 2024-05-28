@@ -53,7 +53,7 @@ def get_kv_data(data: LangKv, session: SessionDep):
     return ResponseBase(code=0, data=kv_data)
 
 
-@router.get("/get_kv_record", response_model=ResponseBase)
+@router.post("/get_kv_record", response_model=ResponseBase)
 def get_kv_record(data: KvRecordItem, session: SessionDep):
     kv_record = crud.get_kv_record(session, data.langValue, data.kvId)
     return ResponseBase(code=0, data=kv_record)
