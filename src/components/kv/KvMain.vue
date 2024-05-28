@@ -52,12 +52,14 @@ import { ref } from 'vue';
 import { useKvStore, type KvItem } from '@/stores/kv';
 import { storeToRefs } from 'pinia';
 import { KvService } from '@/client';
+import KvHisDialog from './dialogs/KvHisDialog.vue';
 
 const kvStore = useKvStore();
 const { kvItemList, langKey, langValue } = storeToRefs(kvStore);
 
 const filterName = ref('');
 const list = ref<KvItem[]>([]);
+const dialog = useDialog();
 
 watch(kvItemList, () => {
   searchEvent();
@@ -65,6 +67,13 @@ watch(kvItemList, () => {
 
 const historyClicked = (row: KvItem) => {
   console.log(row);
+  dialog.success({
+    title: '历史记录',
+    content: () => h(KvHisDialog, null),
+    style: {
+      width: '80vw'
+    }
+  });
 };
 
 const deleteClicked = (row: KvItem) => {

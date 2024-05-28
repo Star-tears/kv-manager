@@ -1,16 +1,14 @@
 <template>
-  <div>
-    <NConfigProvider>
-      <NDialogProvider>
-        <n-message-provider>
-          <NNotificationProvider>
-            <slot />
-          </NNotificationProvider>
-        </n-message-provider>
-      </NDialogProvider>
-      <NGlobalStyle />
-    </NConfigProvider>
-  </div>
+  <NConfigProvider>
+    <NDialogProvider>
+      <n-message-provider>
+        <NNotificationProvider>
+          <slot />
+        </NNotificationProvider>
+      </n-message-provider>
+    </NDialogProvider>
+    <NGlobalStyle />
+  </NConfigProvider>
 </template>
 
 <script setup lang="ts">
