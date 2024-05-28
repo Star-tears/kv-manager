@@ -63,9 +63,9 @@ export class KvService {
      * @returns ResponseBase Successful Response
      * @throws ApiError
      */
-    public static kvGetKvData(data: $OpenApiTs['/api/v1/kv/get_kv_data']['get']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/get_kv_data']['get']['res'][200]> {
+    public static kvGetKvData(data: $OpenApiTs['/api/v1/kv/get_kv_data']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/get_kv_data']['post']['res'][200]> {
         return __request(OpenAPI, {
-            method: 'GET',
+            method: 'POST',
             url: '/api/v1/kv/get_kv_data',
             body: data.requestBody,
             mediaType: 'application/json',
@@ -124,6 +124,63 @@ export class KvService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/kv/get_all_null_value_kv',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Upload New Lang
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static kvUploadNewLang(data: $OpenApiTs['/api/v1/kv/upload_new_lang']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/upload_new_lang']['post']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/kv/upload_new_lang',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Gen Ts
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static kvGenTs(data: $OpenApiTs['/api/v1/kv/gen_ts']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/gen_ts']['post']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/kv/gen_ts',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Merge Check
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static kvMergeCheck(data: $OpenApiTs['/api/v1/kv/merge_check']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/merge_check']['post']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/kv/merge_check',
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {

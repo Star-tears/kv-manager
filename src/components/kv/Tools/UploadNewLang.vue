@@ -2,10 +2,11 @@
   <n-card
     hoverable
     :content-style="{ padding: '8px 8px 8px 8px' }"
-    title="新文件合并"
+    title="上传新语言(ts文件)"
     :header-style="{ padding: '8px 8px 0px 8px' }"
   >
     <div class="flex flex-col gap-2">
+      <n-input></n-input>
       <n-upload
         multiple
         directory-dnd
@@ -21,18 +22,13 @@
           <n-p depth="3" style="margin: 8px 0 0 0"> 点击或者拖动ts文件到该区域来上传 </n-p>
         </n-upload-dragger>
       </n-upload>
-      <n-button class="mb-2 w-full">合并检查</n-button>
+      <n-button class="mb-2 w-full">新增语言</n-button>
     </div>
   </n-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { ArchiveOutline as ArchiveIcon } from '@vicons/ionicons5';
-
-export default defineComponent({
-  components: {
-    ArchiveIcon
-  }
-});
 </script>
+
+<style scoped></style>

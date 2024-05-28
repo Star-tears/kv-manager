@@ -47,7 +47,7 @@ def update_kv(data: KvItem, session: SessionDep):
     return ResponseBase(code=0, data=kv_data)
 
 
-@router.get("/get_kv_data", response_model=ResponseBase)
+@router.post("/get_kv_data", response_model=ResponseBase)
 def get_kv_data(data: LangKv, session: SessionDep):
     kv_data = crud.get_kv(session, data.langKey, data.langValue)
     return ResponseBase(code=0, data=kv_data)

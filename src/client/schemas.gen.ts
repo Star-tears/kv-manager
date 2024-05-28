@@ -106,6 +106,22 @@ export const $LangKv = {
     title: 'LangKv'
 } as const;
 
+export const $LangWithPath = {
+    properties: {
+        lang: {
+            type: 'string',
+            title: 'Lang'
+        },
+        path: {
+            type: 'string',
+            title: 'Path'
+        }
+    },
+    type: 'object',
+    required: ['lang', 'path'],
+    title: 'LangWithPath'
+} as const;
+
 export const $LanguageItemBase = {
     properties: {
         lang: {

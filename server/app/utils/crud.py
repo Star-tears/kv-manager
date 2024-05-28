@@ -152,11 +152,12 @@ def get_kv(session: Session, lang_key: str, lang_value: str):
     B2 = aliased(KvData)
     query = (
         select(
-            KvId.id,
+            KvId.id.label("kv_id"),
             B1.value.label("key"),
             B2.value.label("value"),
             B1.language.label("lang_key"),
             B2.language.label("lang_value"),
+            B2.updated_at.label("updated_at"),
         )
         .outerjoin(B1, (KvId.id == B1.kv_id) & (B1.language == lang_key))
         .outerjoin(B2, (KvId.id == B2.kv_id) & (B2.language == lang_value))

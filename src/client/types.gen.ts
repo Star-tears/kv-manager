@@ -30,6 +30,11 @@ export type LangKv = {
     langValue: string;
 };
 
+export type LangWithPath = {
+    lang: string;
+    path: string;
+};
+
 export type LanguageItemBase = {
     lang: string;
 };
@@ -92,7 +97,7 @@ export type $OpenApiTs = {
         };
     };
     '/api/v1/kv/get_kv_data': {
-        get: {
+        post: {
             req: {
                 requestBody: LangKv;
             };
@@ -146,6 +151,57 @@ export type $OpenApiTs = {
         post: {
             req: {
                 requestBody: LanguageItemBase;
+            };
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: ResponseBase;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
+    '/api/v1/kv/upload_new_lang': {
+        post: {
+            req: {
+                requestBody: LangWithPath;
+            };
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: ResponseBase;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
+    '/api/v1/kv/gen_ts': {
+        post: {
+            req: {
+                requestBody: LanguageItemBase;
+            };
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: ResponseBase;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
+    '/api/v1/kv/merge_check': {
+        post: {
+            req: {
+                requestBody: LangWithPath;
             };
             res: {
                 /**
