@@ -269,3 +269,18 @@ def get_gen_kv(session: Session, lang_value: str, lang_key: str = "English"):
     results = session.exec(query).all()
     results_dict = [row._asdict() for row in results]
     return results_dict
+
+
+def get_v_by_k(session: Session, key: str, lang_value: str, lang_key: str = "English"):
+    statement = select(KvData).where(
+        and_(KvData.value == key, KvData.language == lang_key)
+    )
+    try:
+        kv = session.scalars(statement).one()
+        query = select(KvData).where(
+            and_(KvData.language == lang_value, KvData.kv_id == kv.kv_id)
+        )
+        v = session.scalars(query).one()
+        return v.value
+    except NoResultFound:
+        return None

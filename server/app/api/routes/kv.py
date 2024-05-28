@@ -83,13 +83,14 @@ def upload_new_lang(data: LangWithPath, session: SessionDep):
     crud.create_lang(session, data.lang)
     file_path = os.path.join(data.path)
     try:
+        kv_map = {}
         with open(file_path, "r", encoding="utf-8") as file:
             for line in file:
                 kv_list = [s.strip() for s in line.split("~-~")]
                 if len(kv_list) == 2:
-                    crud.upsert_kv_with_no_commit(
-                        session, kv_list[0], kv_list[1], "English", data.lang
-                    )
+                    kv_map[kv_list[0]] = kv_list[1]
+        for k, v in kv_map.items():
+            crud.upsert_kv_with_no_commit(session, k, v, "English", data.lang)
         session.commit()
         msg = "Upload successfully"
     except Exception as e:
@@ -102,6 +103,31 @@ def gen_ts(data: LanguageItemBase, session: SessionDep):
     file_path = os.path.join(Config.WEBSERVER, "kv", "downloads", f"{data.lang}.ts")
     kv_helper.gen_ts(session, data.lang, file_path)
     return ResponseBase(code=0, data={"file_path": f"{file_path}"})
+
+
+@router.post("/merge_check", response_model=ResponseBase)
+def merge_check(data: LangWithPath, session: SessionDep):
+    file_path = os.path.join(data.path)
+    kv_map = {}
+    with open(file_path, "r", encoding="utf-8") as file:
+        for line in file:
+            kv_list = [s.strip() for s in line.split("~-~")]
+            if len(kv_list) == 2:
+                kv_map[kv_list[0]] = kv_list[1]
+    merge_check_list = []
+    for k, v in kv_map.items():
+        curr_v = crud.get_v_by_k(session, k, data.lang)
+        if curr_v != v:
+            merge_check_list.append(
+                {
+                    "key": k,
+                    "curr_value": curr_v,
+                    "new_value": v,
+                    "lang_key": "English",
+                    "lang_value": data.lang,
+                }
+            )
+    return ResponseBase(code=0, data=merge_check_list)
 
 
 @router.post("/upload-file")
