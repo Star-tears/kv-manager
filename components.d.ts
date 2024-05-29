@@ -7,6 +7,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddNewKv: typeof import('./src/components/kv/Tools/AddNewKv.vue')['default']
+    AddNewKvDialog: typeof import('./src/components/kv/dialogs/AddNewKvDialog.vue')['default']
     Button: typeof import('./src/components/ui/button/Button.vue')['default']
     CreateBucketDialog: typeof import('./src/components/kv/dialogs/CreateBucketDialog.vue')['default']
     DownloadSelect: typeof import('./src/components/kv/Tools/DownloadSelect.vue')['default']

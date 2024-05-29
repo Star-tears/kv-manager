@@ -6,7 +6,7 @@
     :header-style="{ padding: '8px 8px 0px 8px' }"
   >
     <div class="flex flex-col gap-2">
-      <n-input v-model:value="newLangName"></n-input>
+      <n-input v-model:value="newLangName" placeholder="语言名称"></n-input>
       <n-upload
         ref="uploadRef"
         multiple
