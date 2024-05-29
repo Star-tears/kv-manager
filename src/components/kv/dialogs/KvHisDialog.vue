@@ -19,7 +19,7 @@
       <vxe-column title="控制" width="80">
         <template #default="{ row }">
           <div class="flex flex-row gap-2">
-            <n-button type="info" ghost> 回滚 </n-button>
+            <n-button type="info" ghost @click="rollBackClick(row)"> 回滚 </n-button>
           </div>
         </template>
       </vxe-column>
@@ -45,6 +45,9 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+const emit = defineEmits<{
+  (e: 'update-kv', kv_value: string): void;
+}>();
 
 const list = ref<KvRecord[]>(null);
 
@@ -60,6 +63,9 @@ onMounted(() => {
     }
   });
 });
+const rollBackClick = (row: KvRecord) => {
+  emit('update-kv', row.value);
+};
 </script>
 
 <style scoped></style>

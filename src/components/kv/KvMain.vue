@@ -57,6 +57,7 @@ import KvHisDialog from './dialogs/KvHisDialog.vue';
 const kvStore = useKvStore();
 const { kvItemList, langKey, langValue } = storeToRefs(kvStore);
 
+const message = useMessage();
 const filterName = ref('');
 const list = ref<KvItem[]>([]);
 const dialog = useDialog();
@@ -66,7 +67,7 @@ watch(kvItemList, () => {
 });
 
 const historyClicked = (row: KvItem) => {
-  dialog.success({
+  const d = dialog.success({
     title: '历史记录',
     content: () =>
       h(
@@ -74,7 +75,22 @@ const historyClicked = (row: KvItem) => {
         {
           kv_id: row.kv_id,
           kv_key: row.key,
-          lang_value: row.lang_value
+          lang_value: row.lang_value,
+          'onUpdate-kv': (kv_value: string) => {
+            row.value = kv_value;
+            KvService.kvUpdateKv({
+              requestBody: {
+                key: row.key,
+                langKey: row.lang_key,
+                value: row.value,
+                langValue: row.lang_value,
+                kvId: row.kv_id
+              }
+            }).then(() => {
+              message.success('记录更新成功');
+              d.destroy();
+            });
+          }
         },
         null
       ),
