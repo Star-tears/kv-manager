@@ -210,13 +210,21 @@ export class KvService {
     
     /**
      * Download File
+     * @param data The data for the request.
+     * @param data.filePath
      * @returns unknown Successful Response
      * @throws ApiError
      */
-    public static kvDownloadFile(): CancelablePromise<$OpenApiTs['/api/v1/kv/download-file']['get']['res'][200]> {
+    public static kvDownloadFile(data: $OpenApiTs['/api/v1/kv/download-file/{filePath}']['get']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/download-file/{filePath}']['get']['res'][200]> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/kv/download-file'
+            url: '/api/v1/kv/download-file/{filePath}',
+            path: {
+                filePath: data.filePath
+            },
+            errors: {
+                422: 'Validation Error'
+            }
         });
     }
     

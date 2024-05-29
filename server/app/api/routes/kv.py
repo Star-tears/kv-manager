@@ -81,7 +81,7 @@ def get_all_null_value_kv(data: LanguageItemBase, session: SessionDep):
 def upload_new_lang(data: LangWithPath, session: SessionDep):
     crud.create_lang(session, "English")
     crud.create_lang(session, data.lang)
-    file_path = os.path.join(data.path)
+    file_path = os.path.join(Config.WEBSERVER, "uploads", data.path)
     try:
         kv_map = {}
         with open(file_path, "r", encoding="utf-8") as file:
@@ -100,8 +100,9 @@ def upload_new_lang(data: LangWithPath, session: SessionDep):
 
 @router.post("/gen_ts", response_model=ResponseBase)
 def gen_ts(data: LanguageItemBase, session: SessionDep):
-    file_path = os.path.join(Config.WEBSERVER, "kv", "downloads", f"{data.lang}.ts")
-    kv_helper.gen_ts(session, data.lang, file_path)
+    file_path = os.path.join("ts", f"{data.lang}.ts")
+    path = os.path.join(Config.WEBSERVER, "kv", "downloads", file_path)
+    kv_helper.gen_ts(session, data.lang, path)
     return ResponseBase(code=0, data={"file_path": f"{file_path}"})
 
 
@@ -162,11 +163,10 @@ async def upload_file(file: UploadFile = File(...)):
         await file.close()
 
 
-@router.get("/download-file")
-async def download_file():
-    # 假设文件存储在"uploaded_files/"目录下
+@router.get("/download-file/{filePath:path}")
+async def download_file(filePath: str):
     # todo
-    file_path = os.path.join(Config.WEBSERVER, "kv", "buckets")
+    file_path = os.path.join(Config.WEBSERVER, "kv", "downloads", filePath)
     # 检查文件是否存在
     if not os.path.exists(file_path):
         return {"error": "File not found."}
@@ -175,4 +175,27 @@ async def download_file():
         file_path,
         media_type="application/octet-stream",
         filename=os.path.basename(file_path),
+    )
+
+
+@router.get("/download-all-with-zip/{filename}")
+async def download_all_with_zip(filename: str, session: SessionDep):
+    langList = crud.get_lang_list(session)
+    for el in langList:
+        lang = el.lang
+        if lang == "English":
+            continue
+        file_path = os.path.join("ts", f"{lang}.ts")
+        path = os.path.join(Config.WEBSERVER, "kv", "downloads", file_path)
+        kv_helper.gen_ts(session, lang, path)
+    zip_path = os.path.join(Config.WEBSERVER, "kv", "downloads", "package", filename)
+    kv_helper.zip_dir(os.path.join(Config.WEBSERVER, "kv", "downloads", "ts"), zip_path)
+    # 检查文件是否存在
+    if not os.path.exists(zip_path):
+        return {"error": "File not found."}
+    # 返回文件，让客户端下载
+    return FileResponse(
+        zip_path,
+        media_type="application/octet-stream",
+        filename=os.path.basename(zip_path),
     )

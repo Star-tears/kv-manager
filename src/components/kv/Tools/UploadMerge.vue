@@ -9,6 +9,7 @@
       <n-upload
         multiple
         directory-dnd
+        accept=".ts"
         action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
         :max="1"
       >
@@ -26,13 +27,22 @@
   </n-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { ArchiveOutline as ArchiveIcon } from '@vicons/ionicons5';
+import type { UploadFileInfo } from 'naive-ui';
 
-export default defineComponent({
-  components: {
-    ArchiveIcon
-  }
-});
+const fileSet = ref<Set<string>>(new Set<string>());
+
+const onFileUploadFinish = (options: { file: UploadFileInfo; event?: ProgressEvent }) => {
+  fileSet.value.add(options.file.name);
+};
+
+const onFileRemove = (options: {
+  file: UploadFileInfo;
+  fileList: Array<UploadFileInfo>;
+  index: number;
+}) => {
+  fileSet.value.delete(options.file.name);
+  return true;
+};
 </script>

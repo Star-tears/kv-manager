@@ -33,7 +33,7 @@
             </NInput>
           </template>
         </vxe-column>
-        <vxe-column title="控制">
+        <vxe-column title="控制" width="200">
           <template #default="{ row }">
             <div class="flex flex-row gap-2">
               <n-button ghost @click="historyClicked(row)"> 查看历史版本 </n-button>

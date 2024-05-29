@@ -232,13 +232,20 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/api/v1/kv/download-file': {
+    '/api/v1/kv/download-file/{filePath}': {
         get: {
+            req: {
+                filePath: string;
+            };
             res: {
                 /**
                  * Successful Response
                  */
                 200: unknown;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
             };
         };
     };
