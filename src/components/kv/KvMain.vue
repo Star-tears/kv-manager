@@ -33,11 +33,18 @@
             </NInput>
           </template>
         </vxe-column>
-        <vxe-column title="控制" width="200">
+        <vxe-column title="控制" width="230">
           <template #default="{ row }">
             <div class="flex flex-row gap-2">
               <n-button ghost @click="historyClicked(row)"> 查看历史版本 </n-button>
-              <n-button type="error" ghost @click="deleteClicked(row)"> 删除 </n-button>
+              <n-button
+                type="error"
+                ghost
+                :loading="deleteLoadingId === row.kv_id"
+                @click="deleteClicked(row)"
+              >
+                删除
+              </n-button>
             </div>
           </template>
         </vxe-column>
@@ -61,6 +68,7 @@ const message = useMessage();
 const filterName = ref('');
 const list = ref<KvItem[]>([]);
 const dialog = useDialog();
+const deleteLoadingId = ref<number>();
 
 watch(kvItemList, () => {
   searchEvent();
@@ -100,8 +108,17 @@ const historyClicked = (row: KvItem) => {
   });
 };
 
-const deleteClicked = (row: KvItem) => {
-  console.log(row);
+const deleteClicked = async (row: KvItem) => {
+  deleteLoadingId.value = row.kv_id;
+  const res = await KvService.kvDeleteKv({
+    requestBody: {
+      kvId: row.kv_id
+    }
+  });
+  if (res.code === 0) {
+    message.success('删除成功');
+    searchEvent();
+  }
 };
 
 const valueChangeEvent = (row: KvItem) => {

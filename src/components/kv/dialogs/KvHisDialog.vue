@@ -16,10 +16,17 @@
       <vxe-column type="seq" width="40"></vxe-column>
       <vxe-column field="value" title="值"> </vxe-column>
       <vxe-column field="updated_at" title="更新时间"> </vxe-column>
-      <vxe-column title="控制" width="80">
+      <vxe-column title="控制" width="90">
         <template #default="{ row }">
           <div class="flex flex-row gap-2">
-            <n-button type="info" ghost @click="rollBackClick(row)"> 回滚 </n-button>
+            <n-button
+              type="info"
+              ghost
+              :loading="rollBackLoadingId === row.id"
+              @click="rollBackClick(row)"
+            >
+              回滚
+            </n-button>
           </div>
         </template>
       </vxe-column>
@@ -50,6 +57,7 @@ const emit = defineEmits<{
 }>();
 
 const list = ref<KvRecord[]>(null);
+const rollBackLoadingId = ref<number>();
 
 onMounted(() => {
   KvService.kvGetKvRecord({
@@ -64,6 +72,7 @@ onMounted(() => {
   });
 });
 const rollBackClick = (row: KvRecord) => {
+  rollBackLoadingId.value = row.id;
   emit('update-kv', row.value);
 };
 </script>
