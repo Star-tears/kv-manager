@@ -53,6 +53,14 @@
               <n-button type="info" ghost :loading="isLoadingIndex === row.id" @click="merge(row)">
                 合并
               </n-button>
+              <n-button
+                type="error"
+                ghost
+                :loading="deleteLoadingIndex === row.id"
+                @click="deleteMerge(row)"
+              >
+                舍弃
+              </n-button>
             </div>
           </template>
         </vxe-column>
@@ -72,6 +80,7 @@ const { kvEditStatus, mergeCheckLang, mergeCheckFilePath, mergeIsLoading } = sto
 const tableRef = ref<InstanceType<typeof VxeTable>>(null);
 const list = ref<MergeCheckItem[]>([]);
 const isLoadingIndex = ref(-1);
+const deleteLoadingIndex = ref(-1);
 const message = useMessage();
 
 onMounted(async () => {
@@ -102,11 +111,23 @@ const merge = async (row: MergeCheckItem) => {
     }
   });
   if (res.code === 0) {
-    // @ts-ignore
-    await tableRef.value?.remove(row);
+    list.value = list.value.filter((item) => item.id !== row.id);
     message.success('合并成功');
+    if (list.value.length === 0) {
+      message.success('处理完毕');
+      backHome();
+    }
   } else {
     message.error('Something error');
+  }
+};
+
+const deleteMerge = async (row: MergeCheckItem) => {
+  deleteLoadingIndex.value = row.id;
+  list.value = list.value.filter((item) => item.id !== row.id);
+  if (list.value.length === 0) {
+    message.success('处理完毕');
+    backHome();
   }
 };
 </script>

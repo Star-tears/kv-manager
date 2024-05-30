@@ -71,6 +71,10 @@ const isValid = computed(() => {
 });
 
 const mergeCheckBtnCLicked = async () => {
+  if (kvEditStatus.value === 'merge-check') {
+    message.warning('请先完成当前合并检查');
+    return;
+  }
   mergeIsLoading.value = true;
   mergeCheckLang.value = langName.value;
   mergeCheckFilePath.value = fileUploaded.value;
