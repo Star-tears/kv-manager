@@ -144,18 +144,28 @@ const historyClicked = (row: KvItem) => {
 };
 
 const deleteClicked = async (row: KvItem) => {
-  deleteLoadingId.value = row.kv_id;
-  const res = await KvService.kvDeleteKv({
-    requestBody: {
-      kvId: row.kv_id
+  const d = dialog.error({
+    title: '警告',
+    content: '确定要删除吗，这将会删除所有此键对应的其他语种记录？',
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      d.loading = true;
+      deleteLoadingId.value = row.kv_id;
+      const res = await KvService.kvDeleteKv({
+        requestBody: {
+          kvId: row.kv_id
+        }
+      });
+      if (res.code === 0) {
+        // @ts-ignore
+        await tableRef.value?.remove(row);
+        kvItemList.value = kvItemList.value.filter((item) => item.kv_id !== row.kv_id);
+        message.success('删除成功');
+        d.loading = false;
+      }
     }
   });
-  if (res.code === 0) {
-    // @ts-ignore
-    await tableRef.value?.remove(row);
-    kvItemList.value = kvItemList.value.filter((item) => item.kv_id !== row.kv_id);
-    message.success('删除成功');
-  }
 };
 
 const valueChangeEvent = (row: KvItem) => {
