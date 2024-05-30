@@ -14,13 +14,6 @@ import { storeToRefs } from 'pinia';
 const kvStore = useKvStore();
 const { langKey, langValue, langList } = storeToRefs(kvStore);
 
-watch(langKey, () => {
-  kvStore.refreshKvItemList();
-});
-watch(langValue, () => {
-  kvStore.refreshKvItemList();
-});
-
 onMounted(() => {
   kvStore.refreshLanglist();
 });

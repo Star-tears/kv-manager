@@ -24,24 +24,10 @@ export const useKvStore = defineStore('kv', () => {
   const langKey = ref<string>('');
   const langValue = ref<string>('');
   const langList = ref<Record<string, any>[]>([]);
-  const kvItemList = ref<KvItem[]>([]);
   const kvEditStatus = ref<'main' | 'merge-check'>('main');
-  const mergeCheckItemList = ref<MergeCheckItem[]>(null);
-
-  const refreshKvItemList = async () => {
-    if (!langKey.value || !langValue.value) {
-      return;
-    }
-    const res = await KvService.kvGetKvData({
-      requestBody: {
-        langKey: langKey.value,
-        langValue: langValue.value
-      }
-    });
-    if (res.code === 0) {
-      kvItemList.value = res.data as KvItem[];
-    }
-  };
+  const mergeCheckLang = ref<string>('');
+  const mergeCheckFilePath = ref<string>('');
+  const mergeIsLoading = ref<boolean>(false);
 
   const refreshLanglist = async () => {
     const res = await KvService.kvGetLangList();
@@ -52,16 +38,15 @@ export const useKvStore = defineStore('kv', () => {
         return item;
       });
     }
-    console.log(langList.value);
   };
   return {
     langKey,
     langValue,
     langList,
     refreshLanglist,
-    refreshKvItemList,
-    kvItemList,
     kvEditStatus,
-    mergeCheckItemList
+    mergeCheckLang,
+    mergeCheckFilePath,
+    mergeIsLoading
   };
 });

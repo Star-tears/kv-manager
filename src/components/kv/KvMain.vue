@@ -23,6 +23,7 @@
     <LangSelect />
     <div class="h-0 grow">
       <vxe-table
+        ref="tableRef"
         border
         show-overflow
         :column-config="{ resizable: true, useKey: true }"
@@ -33,8 +34,13 @@
         :scroll-y="{ enabled: true }"
       >
         <vxe-column type="seq" width="60"></vxe-column>
-        <vxe-column field="key" title="键" type="html"> </vxe-column>
-        <vxe-column field="value" title="值" :edit-render="{ autofocus: '.vxe-input--inner' }">
+        <vxe-column field="key" title="键" type="html" sortable> </vxe-column>
+        <vxe-column
+          field="value"
+          title="值"
+          :edit-render="{ autofocus: '.vxe-input--inner' }"
+          sortable
+        >
           <template #edit="{ row }">
             <NInput
               v-model:value="row.value"
@@ -72,17 +78,22 @@ import { useKvStore, type KvItem } from '@/stores/kv';
 import { storeToRefs } from 'pinia';
 import { KvService } from '@/client';
 import KvHisDialog from './dialogs/KvHisDialog.vue';
+import type { VxeTable } from 'vxe-table';
 
 const kvStore = useKvStore();
-const { kvItemList, langKey, langValue } = storeToRefs(kvStore);
-
+const { langKey, langValue } = storeToRefs(kvStore);
+const tableRef = ref<InstanceType<typeof VxeTable>>(null);
 const message = useMessage();
 const filterName = ref('');
 const list = ref<KvItem[]>([]);
 const dialog = useDialog();
 const deleteLoadingId = ref<number>();
+const kvItemList = ref<KvItem[]>([]);
 
-watch(kvItemList, () => {
+watch(langKey, () => {
+  searchEvent();
+});
+watch(langValue, () => {
   searchEvent();
 });
 
@@ -128,8 +139,10 @@ const deleteClicked = async (row: KvItem) => {
     }
   });
   if (res.code === 0) {
+    // @ts-ignore
+    await tableRef.value?.remove(row);
+    kvItemList.value = kvItemList.value.filter((item) => item.kv_id !== row.kv_id);
     message.success('删除成功');
-    searchEvent();
   }
 };
 
@@ -180,6 +193,7 @@ const searchEvent = () => {
       }
     }).then((res) => {
       if (res.code === 0) {
+        kvItemList.value = res.data as KvItem[];
         list.value = res.data as KvItem[];
       }
     });

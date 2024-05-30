@@ -28,19 +28,20 @@
         :column-config="{ resizable: true, useKey: true }"
         :row-config="{ useKey: true, isHover: true }"
         :edit-config="{ trigger: 'dblclick', mode: 'cell' }"
-        :data="mergeCheckItemList"
+        :data="list"
         height="auto"
         :scroll-y="{ enabled: true }"
       >
-        <vxe-column type="seq" width="60"></vxe-column>
-        <vxe-column field="lang_key" title="键语种" width="100"> </vxe-column>
-        <vxe-column field="key" title="键"> </vxe-column>
-        <vxe-column field="lang_value" title="值语种" width="100"> </vxe-column>
-        <vxe-column field="curr_value" title="当前值"> </vxe-column>
+        <vxe-column type="seq" width="40"></vxe-column>
+        <vxe-column field="lang_key" title="键语种" width="100" sortable> </vxe-column>
+        <vxe-column field="key" title="键" sortable> </vxe-column>
+        <vxe-column field="lang_value" title="值语种" width="100" sortable> </vxe-column>
+        <vxe-column field="curr_value" title="当前值" sortable> </vxe-column>
         <vxe-column
           field="new_value"
           title="新值"
           :edit-render="{ autofocus: '.vxe-input--inner' }"
+          sortable
         >
           <template #edit="{ row }">
             <NInput v-model:value="row.new_value" type="text" placeholder="请输入值"> </NInput>
@@ -49,7 +50,7 @@
         <vxe-column title="控制" width="150">
           <template #default="{ row }">
             <div class="flex flex-row gap-2">
-              <n-button ghost :loading="isLoadingIndex === row.id" @click="merge(row)">
+              <n-button type="info" ghost :loading="isLoadingIndex === row.id" @click="merge(row)">
                 合并
               </n-button>
             </div>
@@ -67,10 +68,25 @@ import { storeToRefs } from 'pinia';
 import type { VxeTable } from 'vxe-table';
 
 const kvStore = useKvStore();
-const { mergeCheckItemList, kvEditStatus } = storeToRefs(kvStore);
+const { kvEditStatus, mergeCheckLang, mergeCheckFilePath, mergeIsLoading } = storeToRefs(kvStore);
 const tableRef = ref<InstanceType<typeof VxeTable>>(null);
+const list = ref<MergeCheckItem[]>([]);
 const isLoadingIndex = ref(-1);
 const message = useMessage();
+
+onMounted(async () => {
+  const res = await KvService.kvMergeCheck({
+    requestBody: {
+      lang: mergeCheckLang.value,
+      path: mergeCheckFilePath.value
+    }
+  });
+  if (res.code === 0) {
+    list.value = res.data as MergeCheckItem[];
+    mergeIsLoading.value = false;
+  }
+});
+
 const backHome = () => {
   kvEditStatus.value = 'main';
 };
@@ -86,6 +102,7 @@ const merge = async (row: MergeCheckItem) => {
     }
   });
   if (res.code === 0) {
+    // @ts-ignore
     await tableRef.value?.remove(row);
     message.success('合并成功');
   } else {

@@ -29,7 +29,7 @@
       <n-button
         class="mb-2 w-full"
         :disabled="isValid"
-        :loading="isLoading"
+        :loading="mergeIsLoading"
         @click="mergeCheckBtnCLicked"
       >
         合并检查
@@ -46,12 +46,12 @@ import type { NUpload, UploadFileInfo } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
 const kvStore = useKvStore();
-const { langList, kvEditStatus, mergeCheckItemList } = storeToRefs(kvStore);
+const { langList, kvEditStatus, mergeCheckLang, mergeCheckFilePath, mergeIsLoading } =
+  storeToRefs(kvStore);
 
 const uploadRef = ref<InstanceType<typeof NUpload>>();
 const langName = ref(null);
 const fileUploaded = ref<string>('');
-const isLoading = ref(false);
 const message = useMessage();
 
 const onFileUploadFinish = (options: { file: UploadFileInfo; event?: ProgressEvent }) => {
@@ -71,26 +71,17 @@ const isValid = computed(() => {
 });
 
 const mergeCheckBtnCLicked = async () => {
-  isLoading.value = true;
+  mergeIsLoading.value = true;
+  mergeCheckLang.value = langName.value;
+  mergeCheckFilePath.value = fileUploaded.value;
   setTimeout(() => {
     langName.value = null;
     uploadRef.value.clear();
-    isLoading.value = false;
+    mergeIsLoading.value = false;
   }, 10000);
-  const res = await KvService.kvMergeCheck({
-    requestBody: {
-      lang: langName.value,
-      path: fileUploaded.value
-    }
-  });
-  console.log(res);
-  if (res.code === 0) {
-    mergeCheckItemList.value = res.data as MergeCheckItem[];
-    kvEditStatus.value = 'merge-check';
-    langName.value = null;
-    uploadRef.value.clear();
-    isLoading.value = false;
-  }
+  kvEditStatus.value = 'merge-check';
+  langName.value = null;
+  uploadRef.value.clear();
 };
 </script>
 
