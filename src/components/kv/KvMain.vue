@@ -43,7 +43,7 @@
         :edit-config="{ trigger: 'dblclick', mode: 'cell' }"
         :data="list"
         height="auto"
-        :scroll-y="{ enabled: true, oSize: 80 }"
+        :scroll-y="{ enabled: true }"
       >
         <vxe-column type="seq" width="60"></vxe-column>
         <vxe-column field="key" title="键" type="html" sortable> </vxe-column>
@@ -172,6 +172,8 @@ const valueChangeEvent = (row: KvItem) => {
   if (itemWithKvId) {
     itemWithKvId.value = row.value;
   }
+  //@ts-ignore
+  tableRef.value.clearEdit();
 };
 
 const searchEvent = () => {
