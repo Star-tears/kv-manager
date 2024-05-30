@@ -11,11 +11,22 @@ export type KvItem = {
   updated_at: string;
 };
 
+export type MergeCheckItem = {
+  id: number;
+  key: string;
+  curr_value: string;
+  new_value: string;
+  lang_key: string;
+  lang_value: string;
+};
+
 export const useKvStore = defineStore('kv', () => {
   const langKey = ref<string>('');
   const langValue = ref<string>('');
   const langList = ref<Record<string, any>[]>([]);
   const kvItemList = ref<KvItem[]>([]);
+  const kvEditStatus = ref<'main' | 'merge-check'>('main');
+  const mergeCheckItemList = ref<MergeCheckItem[]>(null);
 
   const refreshKvItemList = async () => {
     if (!langKey.value || !langValue.value) {
@@ -43,5 +54,14 @@ export const useKvStore = defineStore('kv', () => {
     }
     console.log(langList.value);
   };
-  return { langKey, langValue, langList, refreshLanglist, refreshKvItemList, kvItemList };
+  return {
+    langKey,
+    langValue,
+    langList,
+    refreshLanglist,
+    refreshKvItemList,
+    kvItemList,
+    kvEditStatus,
+    mergeCheckItemList
+  };
 });

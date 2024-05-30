@@ -1,5 +1,21 @@
 <template>
-  <div class="flex h-full flex-col gap-3">
+  <div
+    class="flex h-full flex-col gap-3"
+    v-motion
+    :initial="{
+      opacity: 0,
+      y: 100
+    }"
+    :enter="{
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 500,
+        type: 'keyframes',
+        ease: 'easeInOut'
+      }
+    }"
+  >
     <p>
       <vxe-input v-model="filterName" type="search" placeholder="全表搜索" @keyup="searchEvent">
       </vxe-input>
@@ -17,11 +33,7 @@
         :scroll-y="{ enabled: true }"
       >
         <vxe-column type="seq" width="60"></vxe-column>
-        <vxe-column field="key" title="键" type="html">
-          <template #edit="{ row }">
-            <vxe-input v-model="row.key" type="text"></vxe-input>
-          </template>
-        </vxe-column>
+        <vxe-column field="key" title="键" type="html"> </vxe-column>
         <vxe-column field="value" title="值" :edit-render="{ autofocus: '.vxe-input--inner' }">
           <template #edit="{ row }">
             <NInput

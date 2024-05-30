@@ -18,6 +18,8 @@ declare module 'vue' {
     KvManager: typeof import('./src/components/kv/KvMergeCheck.vue')['default']
     KvMergeCheck: typeof import('./src/components/kv/KvMergeCheck.vue')['default']
     LangSelect: typeof import('./src/components/kv/LangSelect.vue')['default']
+    NBreadcrumb: typeof import('naive-ui')['NBreadcrumb']
+    NBreadcrumbItem: typeof import('naive-ui')['NBreadcrumbItem']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     NDivider: typeof import('naive-ui')['NDivider']

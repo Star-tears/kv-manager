@@ -108,7 +108,7 @@ def gen_ts(data: LanguageItemBase, session: SessionDep):
 
 @router.post("/merge_check", response_model=ResponseBase)
 def merge_check(data: LangWithPath, session: SessionDep):
-    file_path = os.path.join(data.path)
+    file_path = os.path.join(Config.WEBSERVER, "uploads", data.path)
     kv_map = {}
     with open(file_path, "r", encoding="utf-8") as file:
         for line in file:
@@ -116,11 +116,14 @@ def merge_check(data: LangWithPath, session: SessionDep):
             if len(kv_list) == 2:
                 kv_map[kv_list[0]] = kv_list[1]
     merge_check_list = []
+    id = 0
     for k, v in kv_map.items():
         curr_v = crud.get_v_by_k(session, k, data.lang)
         if curr_v != v:
+            id += 1
             merge_check_list.append(
                 {
+                    "id": id,
                     "key": k,
                     "curr_value": curr_v,
                     "new_value": v,

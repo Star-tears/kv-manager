@@ -6,12 +6,16 @@
     :header-style="{ padding: '8px 8px 0px 8px' }"
   >
     <div class="flex flex-col gap-2">
+      <n-select v-model:value="langName" :options="langList" placeholder="选择合并语言"></n-select>
       <n-upload
+        ref="uploadRef"
         multiple
         directory-dnd
         accept=".ts"
-        action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
+        action="/api/v1/kv/upload-file"
         :max="1"
+        :on-finish="onFileUploadFinish"
+        :on-remove="onFileRemove"
       >
         <n-upload-dragger>
           <div style="margin-bottom: 12px">
@@ -22,19 +26,36 @@
           <n-p depth="3" style="margin: 8px 0 0 0"> 点击或者拖动ts文件到该区域来上传 </n-p>
         </n-upload-dragger>
       </n-upload>
-      <n-button class="mb-2 w-full">合并检查</n-button>
+      <n-button
+        class="mb-2 w-full"
+        :disabled="isValid"
+        :loading="isLoading"
+        @click="mergeCheckBtnCLicked"
+      >
+        合并检查
+      </n-button>
     </div>
   </n-card>
 </template>
 
 <script setup lang="ts">
+import { KvService } from '@/client';
+import { useKvStore, type MergeCheckItem } from '@/stores/kv';
 import { ArchiveOutline as ArchiveIcon } from '@vicons/ionicons5';
-import type { UploadFileInfo } from 'naive-ui';
+import type { NUpload, UploadFileInfo } from 'naive-ui';
+import { storeToRefs } from 'pinia';
 
-const fileSet = ref<Set<string>>(new Set<string>());
+const kvStore = useKvStore();
+const { langList, kvEditStatus, mergeCheckItemList } = storeToRefs(kvStore);
+
+const uploadRef = ref<InstanceType<typeof NUpload>>();
+const langName = ref(null);
+const fileUploaded = ref<string>('');
+const isLoading = ref(false);
+const message = useMessage();
 
 const onFileUploadFinish = (options: { file: UploadFileInfo; event?: ProgressEvent }) => {
-  fileSet.value.add(options.file.name);
+  fileUploaded.value = options.file.name;
 };
 
 const onFileRemove = (options: {
@@ -42,7 +63,35 @@ const onFileRemove = (options: {
   fileList: Array<UploadFileInfo>;
   index: number;
 }) => {
-  fileSet.value.delete(options.file.name);
+  fileUploaded.value = '';
   return true;
 };
+const isValid = computed(() => {
+  return fileUploaded.value === '' || langName.value === null;
+});
+
+const mergeCheckBtnCLicked = async () => {
+  isLoading.value = true;
+  setTimeout(() => {
+    langName.value = null;
+    uploadRef.value.clear();
+    isLoading.value = false;
+  }, 10000);
+  const res = await KvService.kvMergeCheck({
+    requestBody: {
+      lang: langName.value,
+      path: fileUploaded.value
+    }
+  });
+  console.log(res);
+  if (res.code === 0) {
+    mergeCheckItemList.value = res.data as MergeCheckItem[];
+    kvEditStatus.value = 'merge-check';
+    langName.value = null;
+    uploadRef.value.clear();
+    isLoading.value = false;
+  }
+};
 </script>
+
+<style scoped></style>
