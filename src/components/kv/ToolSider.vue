@@ -4,6 +4,7 @@
     <DownloadZip />
     <AddNewKv />
     <DownloadSelect />
+    <CheckAllEmpty />
     <UploadMerge />
     <UploadNewLang />
   </div>
@@ -11,6 +12,7 @@
 
 <script setup lang="ts">
 import AddNewKv from './Tools/AddNewKv.vue';
+import CheckAllEmpty from './Tools/CheckAllEmpty.vue';
 import DownloadZip from './Tools/DownloadZip.vue';
 </script>
 

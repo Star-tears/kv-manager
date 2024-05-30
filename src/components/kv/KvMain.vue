@@ -16,10 +16,22 @@
       }
     }"
   >
-    <p>
-      <vxe-input v-model="filterName" type="search" placeholder="全表搜索" @keyup="searchEvent">
-      </vxe-input>
-    </p>
+    <div class="flex flex-row items-center justify-between">
+      <n-breadcrumb separator=">">
+        <n-breadcrumb-item> home</n-breadcrumb-item>
+      </n-breadcrumb>
+      <div class="w-80">
+        <vxe-input
+          v-model="filterName"
+          type="search"
+          placeholder="全表搜索"
+          @keyup="searchEvent"
+          :style="{ width: '100%' }"
+        >
+        </vxe-input>
+      </div>
+    </div>
+
     <LangSelect />
     <div class="h-0 grow">
       <vxe-table
@@ -31,7 +43,7 @@
         :edit-config="{ trigger: 'dblclick', mode: 'cell' }"
         :data="list"
         height="auto"
-        :scroll-y="{ enabled: true }"
+        :scroll-y="{ enabled: true, oSize: 80 }"
       >
         <vxe-column type="seq" width="60"></vxe-column>
         <vxe-column field="key" title="键" type="html" sortable> </vxe-column>

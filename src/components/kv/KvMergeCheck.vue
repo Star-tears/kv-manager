@@ -30,7 +30,7 @@
         :edit-config="{ trigger: 'dblclick', mode: 'cell' }"
         :data="list"
         height="auto"
-        :scroll-y="{ enabled: true }"
+        :scroll-y="{ enabled: true, oSize: 80 }"
       >
         <vxe-column type="seq" width="40"></vxe-column>
         <vxe-column field="lang_key" title="键语种" width="100" sortable> </vxe-column>

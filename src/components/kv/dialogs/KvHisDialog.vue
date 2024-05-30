@@ -11,7 +11,7 @@
       :row-config="{ useKey: true, isHover: true }"
       :data="list"
       height="500"
-      :scroll-y="{ enabled: true }"
+      :scroll-y="{ enabled: true, oSize: 30 }"
     >
       <vxe-column type="seq" width="40"></vxe-column>
       <vxe-column field="value" title="值"> </vxe-column>

@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { KvService } from '@/client';
 
@@ -20,14 +20,24 @@ export type MergeCheckItem = {
   lang_value: string;
 };
 
+export type CheckEmptyItem = {
+  kv_id: number;
+  key: string;
+  value: string;
+  lang_key: string;
+  lang_value: string;
+};
+
 export const useKvStore = defineStore('kv', () => {
   const langKey = ref<string>('');
   const langValue = ref<string>('');
   const langList = ref<Record<string, any>[]>([]);
-  const kvEditStatus = ref<'main' | 'merge-check'>('main');
+  const kvEditStatus = ref<'main' | 'merge-check' | 'all-empty'>('main');
   const mergeCheckLang = ref<string>('');
   const mergeCheckFilePath = ref<string>('');
   const mergeIsLoading = ref<boolean>(false);
+  const checkEmptyCount = ref<number>(0);
+  const checkEmptyIsLoading = ref<boolean>(false);
 
   const refreshLanglist = async () => {
     const res = await KvService.kvGetLangList();
@@ -47,6 +57,8 @@ export const useKvStore = defineStore('kv', () => {
     kvEditStatus,
     mergeCheckLang,
     mergeCheckFilePath,
-    mergeIsLoading
+    mergeIsLoading,
+    checkEmptyCount,
+    checkEmptyIsLoading
   };
 });

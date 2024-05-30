@@ -236,7 +236,7 @@ def get_null_value_kv(session: Session, lang_key: str, lang_value: str):
     B2 = aliased(KvData)
     query = (
         select(
-            KvId.id,
+            KvId.id.label("kv_id"),
             B1.value.label("key"),
             B2.value.label("value"),
             B1.language.label("lang_key"),
