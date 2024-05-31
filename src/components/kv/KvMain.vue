@@ -18,7 +18,12 @@
   >
     <div class="flex flex-row items-center justify-between">
       <n-breadcrumb separator=">">
-        <n-breadcrumb-item> home</n-breadcrumb-item>
+        <n-breadcrumb-item>
+          <div class="flex flex-row gap-1">
+            <Icon icon="ic:round-home" />
+            <div>home</div>
+          </div>
+        </n-breadcrumb-item>
       </n-breadcrumb>
       <div class="w-80">
         <vxe-input

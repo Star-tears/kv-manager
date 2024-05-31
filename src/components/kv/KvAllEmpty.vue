@@ -17,8 +17,18 @@
     }"
   >
     <n-breadcrumb separator=">">
-      <n-breadcrumb-item @click="backHome"> home</n-breadcrumb-item>
-      <n-breadcrumb-item> all-empty</n-breadcrumb-item>
+      <n-breadcrumb-item @click="backHome">
+        <div class="flex flex-row gap-1">
+          <Icon icon="ic:round-home" />
+          <div>home</div>
+        </div>
+      </n-breadcrumb-item>
+      <n-breadcrumb-item>
+        <div class="flex flex-row gap-1">
+          <Icon icon="ph:link-bold" />
+          <div>all-empty</div>
+        </div>
+      </n-breadcrumb-item>
     </n-breadcrumb>
     <div class="h-0 grow">
       <vxe-table
