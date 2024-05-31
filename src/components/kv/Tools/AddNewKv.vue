@@ -6,7 +6,7 @@
     :header-style="{ padding: '8px 8px 0px 8px' }"
   >
     <div class="flex flex-col gap-2">
-      <n-button class="mb-2 w-full" @click="addNewClick">新增</n-button>
+      <n-button class="mb-2 w-full" type="primary" @click="addNewClick">新增</n-button>
     </div>
   </n-card>
 </template>

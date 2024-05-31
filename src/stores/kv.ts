@@ -9,6 +9,7 @@ export type KvItem = {
   lang_key: string;
   lang_value: string;
   updated_at: string;
+  feishu_language: string;
 };
 
 export type MergeCheckItem = {
@@ -18,6 +19,7 @@ export type MergeCheckItem = {
   new_value: string;
   lang_key: string;
   lang_value: string;
+  feishu_language: string;
 };
 
 export type CheckEmptyItem = {
@@ -26,6 +28,7 @@ export type CheckEmptyItem = {
   value: string;
   lang_key: string;
   lang_value: string;
+  feishu_language: string;
 };
 
 export const useKvStore = defineStore('kv', () => {

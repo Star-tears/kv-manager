@@ -44,3 +44,4 @@ class Language(SQLModel, table=True):
         default=None, primary_key=True, sa_column_kwargs={"autoincrement": True}
     )
     lang: str
+    feishu_language: str

@@ -30,6 +30,7 @@
         class="mb-2 w-full"
         :disabled="isValid"
         :loading="mergeIsLoading"
+        type="warning"
         @click="mergeCheckBtnCLicked"
       >
         合并检查

@@ -44,7 +44,18 @@
           sortable
         >
           <template #edit="{ row }">
-            <NInput v-model:value="row.new_value" type="text" placeholder="请输入值"> </NInput>
+            <div class="flex flex-row gap-2">
+              <NInput v-model:value="row.new_value" type="text" placeholder="请输入值"> </NInput>
+              <n-button
+                ghost
+                text
+                type="info"
+                :loading="transIsloadingId === row.id"
+                @click="translateByFeishu(row)"
+              >
+                <Icon icon="hugeicons:translate" width="24" height="24" />
+              </n-button>
+            </div>
           </template>
         </vxe-column>
         <vxe-column title="控制" width="150">
@@ -70,7 +81,8 @@
 </template>
 
 <script lang="ts" setup>
-import { KvService } from '@/client';
+import { Icon } from '@iconify/vue/dist/iconify.js';
+import { FeishuService, KvService } from '@/client';
 import { useKvStore, type MergeCheckItem } from '@/stores/kv';
 import { storeToRefs } from 'pinia';
 import type { VxeTable } from 'vxe-table';
@@ -82,6 +94,7 @@ const list = ref<MergeCheckItem[]>([]);
 const isLoadingIndex = ref(-1);
 const deleteLoadingIndex = ref(-1);
 const message = useMessage();
+const transIsloadingId = ref<number>();
 
 onMounted(async () => {
   const res = await KvService.kvMergeCheck({
@@ -95,6 +108,19 @@ onMounted(async () => {
     mergeIsLoading.value = false;
   }
 });
+
+const translateByFeishu = async (row: MergeCheckItem) => {
+  transIsloadingId.value = row.id;
+  const res = await FeishuService.feishuTransText({
+    sourceLanguage: row.lang_key,
+    text: row.key,
+    lang: row.lang_value
+  });
+  if (res.code === 0) {
+    row.new_value = (res.data as Record<string, any>)['text'];
+  }
+  transIsloadingId.value = -1;
+};
 
 const backHome = () => {
   kvEditStatus.value = 'main';

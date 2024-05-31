@@ -7,25 +7,6 @@ import type { $OpenApiTs } from './types.gen';
 
 export class KvService {
     /**
-     * Create Lang
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ResponseBase Successful Response
-     * @throws ApiError
-     */
-    public static kvCreateLang(data: $OpenApiTs['/api/v1/kv/create_lang']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/create_lang']['post']['res'][200]> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/kv/create_lang',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
      * Delete Lang
      * @param data The data for the request.
      * @param data.requestBody
@@ -275,7 +256,7 @@ export class FeishuService {
      * @param data The data for the request.
      * @param data.sourceLanguage
      * @param data.text
-     * @param data.targetLanguage
+     * @param data.lang
      * @returns ResponseBase Successful Response
      * @throws ApiError
      */
@@ -286,7 +267,7 @@ export class FeishuService {
             query: {
                 source_language: data.sourceLanguage,
                 text: data.text,
-                target_language: data.targetLanguage
+                lang: data.lang
             },
             errors: {
                 422: 'Validation Error'

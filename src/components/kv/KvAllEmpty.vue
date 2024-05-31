@@ -43,13 +43,24 @@
           sortable
         >
           <template #edit="{ row }">
-            <NInput
-              v-model:value="row.value"
-              type="text"
-              placeholder="请输入值"
-              @change="valueChangeEvent(row)"
-            >
-            </NInput>
+            <div class="flex flex-row gap-2">
+              <n-input
+                v-model:value="row.value"
+                type="text"
+                placeholder="请输入值"
+                @change="valueChangeEvent(row)"
+              >
+              </n-input>
+              <n-button
+                ghost
+                text
+                type="info"
+                :loading="transIsloadingId === row.kv_id"
+                @click="translateByFeishu(row)"
+              >
+                <Icon icon="hugeicons:translate" width="24" height="24" />
+              </n-button>
+            </div>
           </template>
         </vxe-column>
       </vxe-table>
@@ -58,7 +69,8 @@
 </template>
 
 <script lang="ts" setup>
-import { KvService } from '@/client';
+import { Icon } from '@iconify/vue/dist/iconify.js';
+import { FeishuService, KvService } from '@/client';
 import { useKvStore, type CheckEmptyItem } from '@/stores/kv';
 import { storeToRefs } from 'pinia';
 import type { VxeTable } from 'vxe-table';
@@ -68,6 +80,7 @@ const { kvEditStatus, checkEmptyCount, checkEmptyIsLoading } = storeToRefs(kvSto
 const tableRef = ref<InstanceType<typeof VxeTable>>(null);
 const list = ref<CheckEmptyItem[]>([]);
 const message = useMessage();
+const transIsloadingId = ref<number>();
 
 watch(checkEmptyCount, async () => {
   const res = await KvService.kvGetAllNullValueKv({
@@ -97,8 +110,8 @@ const backHome = () => {
   kvEditStatus.value = 'main';
 };
 
-const valueChangeEvent = (row: CheckEmptyItem) => {
-  KvService.kvUpdateKv({
+const valueChangeEvent = async (row: CheckEmptyItem) => {
+  const res = await KvService.kvUpdateKv({
     requestBody: {
       key: row.key,
       langKey: row.lang_key,
@@ -109,6 +122,28 @@ const valueChangeEvent = (row: CheckEmptyItem) => {
   });
   //@ts-ignore
   tableRef.value.clearEdit();
+};
+
+const translateByFeishu = async (row: CheckEmptyItem) => {
+  transIsloadingId.value = row.kv_id;
+  const res = await FeishuService.feishuTransText({
+    sourceLanguage: row.lang_key,
+    text: row.key,
+    lang: row.lang_value
+  });
+  if (res.code === 0) {
+    row.value = (res.data as Record<string, any>)['text'];
+    await KvService.kvUpdateKv({
+      requestBody: {
+        key: row.key,
+        langKey: row.lang_key,
+        value: row.value,
+        langValue: row.lang_value,
+        kvId: row.kv_id
+      }
+    });
+  }
+  transIsloadingId.value = -1;
 };
 </script>
 <style>

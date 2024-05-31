@@ -4,6 +4,7 @@ import json
 from app.api.deps import SessionDep
 from app.common.config import Config
 from app.models.response import ResponseBase
+from app.utils import crud
 import app.utils.feishu_helper as feishu_helper
 from fastapi import APIRouter
 import lark_oapi as lark
@@ -13,7 +14,8 @@ router = APIRouter()
 
 
 @router.post("/trans_text", response_model=ResponseBase)
-def trans_text(source_language, text, target_language):
+def trans_text(source_language, text, lang, session: SessionDep):
+    target_language = crud.get_feishu_language(session, lang)
     # 发起请求
     response: TranslateTextResponse = feishu_helper.text_translate(
         source_language, text, target_language

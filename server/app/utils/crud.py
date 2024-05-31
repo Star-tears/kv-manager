@@ -5,11 +5,11 @@ from sqlalchemy.orm import aliased
 from sqlalchemy.exc import NoResultFound
 
 
-def create_lang(session: Session, lang: str) -> Language:
+def create_lang(session: Session, lang: str, feishu_language: str) -> Language:
     statement = select(Language).where(Language.lang == lang)
     result = session.exec(statement).all()
     if len(result) == 0:
-        new_lang = Language(lang=lang)
+        new_lang = Language(lang=lang, feishu_language=feishu_language)
         session.add(new_lang)
         session.commit()
         session.refresh(new_lang)
@@ -150,6 +150,7 @@ def create_kvid_with_no_commit(session: Session) -> KvId:
 def get_kv(session: Session, lang_key: str, lang_value: str):
     B1 = aliased(KvData)
     B2 = aliased(KvData)
+    C1 = aliased(Language)
     query = (
         select(
             KvId.id.label("kv_id"),
@@ -158,9 +159,11 @@ def get_kv(session: Session, lang_key: str, lang_value: str):
             B1.language.label("lang_key"),
             B2.language.label("lang_value"),
             B2.updated_at.label("updated_at"),
+            C1.feishu_language,
         )
         .outerjoin(B1, (KvId.id == B1.kv_id) & (B1.language == lang_key))
         .outerjoin(B2, (KvId.id == B2.kv_id) & (B2.language == lang_value))
+        .outerjoin(C1, C1.lang == lang_value)
     )
 
     # 执行查询并获取结果
@@ -249,6 +252,7 @@ def delete_language(session: Session, lang: str):
 def get_null_value_kv(session: Session, lang_key: str, lang_value: str):
     B1 = aliased(KvData)
     B2 = aliased(KvData)
+    C1 = aliased(Language)
     query = (
         select(
             KvId.id.label("kv_id"),
@@ -256,9 +260,11 @@ def get_null_value_kv(session: Session, lang_key: str, lang_value: str):
             B2.value.label("value"),
             B1.language.label("lang_key"),
             B2.language.label("lang_value"),
+            C1.feishu_language,
         )
         .outerjoin(B1, (KvId.id == B1.kv_id) & (B1.language == lang_key))
         .outerjoin(B2, (KvId.id == B2.kv_id) & (B2.language == lang_value))
+        .outerjoin(C1, C1.lang == lang_value)
         .where(or_(B2.value.is_(None), B2.value == ""))
     )
 
@@ -298,5 +304,14 @@ def get_v_by_k(session: Session, key: str, lang_value: str, lang_key: str = "Eng
         )
         v = session.scalars(query).one()
         return v.value
+    except NoResultFound:
+        return None
+
+
+def get_feishu_language(session: Session, lang):
+    statement = select(Language).where(and_(Language.lang == lang))
+    try:
+        language = session.scalars(statement).one()
+        return language.feishu_language
     except NoResultFound:
         return None

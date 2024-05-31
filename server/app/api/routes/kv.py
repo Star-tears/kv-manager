@@ -18,19 +18,16 @@ from app.utils.resource import (
     rename_file,
 )
 import app.utils.kv_helper as kv_helper
+import app.utils.feishu_helper as feishu_helper
 from fastapi import APIRouter, File, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 
 from app.utils import crud
+import lark_oapi as lark
+from lark_oapi.api.translation.v1 import *
 
 
 router = APIRouter()
-
-
-@router.post("/create_lang", response_model=ResponseBase)
-def create_lang(data: LanguageItemBase, session: SessionDep):
-    result = crud.create_lang(session, data.lang)
-    return ResponseBase(code=0, data=result)
 
 
 @router.post("/delete_lang", response_model=ResponseBase)
@@ -85,16 +82,26 @@ def get_all_null_value_kv(data: LanguageItemBase, session: SessionDep):
 
 @router.post("/upload_new_lang", response_model=ResponseBase)
 def upload_new_lang(data: LangWithPath, session: SessionDep):
-    crud.create_lang(session, "English")
-    crud.create_lang(session, data.lang)
+    crud.create_lang(session, "English", "en")
     file_path = os.path.join(Config.WEBSERVER, "uploads", data.path)
     try:
         kv_map = {}
+        langValueIsCreated = False
         with open(file_path, "r", encoding="utf-8") as file:
             for line in file:
                 kv_list = [s.strip() for s in line.split("~-~")]
                 if len(kv_list) == 2:
                     kv_map[kv_list[0]] = kv_list[1]
+                    if not langValueIsCreated and len(kv_list[1]) > 0:
+                        response = feishu_helper.text_detect(kv_list[1])
+                        if not response.success():
+                            lark.logger.error(
+                                f"client.translation.v1.text.detect failed, code: {response.code}, msg: {response.msg}, log_id: {response.get_log_id()}"
+                            )
+                            langValue = ""
+                        langValue = response.data.language
+                        crud.create_lang(session, data.lang, langValue)
+                        langValueIsCreated = True
         for k, v in kv_map.items():
             crud.upsert_kv_with_no_commit(session, k, v, "English", data.lang)
         session.commit()

@@ -30,6 +30,7 @@
         class="mb-2 w-full"
         :disabled="isValid"
         :loading="isLoading"
+        type="info"
         @click="addNewLangBtnCLicked"
         >新增语言</n-button
       >

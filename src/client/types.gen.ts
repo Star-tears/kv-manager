@@ -52,23 +52,6 @@ export type ValidationError = {
 };
 
 export type $OpenApiTs = {
-    '/api/v1/kv/create_lang': {
-        post: {
-            req: {
-                requestBody: LanguageItemBase;
-            };
-            res: {
-                /**
-                 * Successful Response
-                 */
-                200: ResponseBase;
-                /**
-                 * Validation Error
-                 */
-                422: HTTPValidationError;
-            };
-        };
-    };
     '/api/v1/kv/delete_lang': {
         post: {
             req: {
@@ -286,8 +269,8 @@ export type $OpenApiTs = {
     '/api/v1/feishu/trans_text': {
         post: {
             req: {
+                lang: unknown;
                 sourceLanguage: unknown;
-                targetLanguage: unknown;
                 text: unknown;
             };
             res: {
