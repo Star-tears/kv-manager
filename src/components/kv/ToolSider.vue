@@ -2,11 +2,11 @@
   <div class="flex flex-col gap-4">
     <n-card title="操作栏" :header-style="{ padding: '4px 4px 4px 12px' }" />
     <DownloadZip />
-    <AddNewKv />
     <DownloadSelect />
+    <AddNewKv />
+    <UploadNewLang />
     <CheckAllEmpty />
     <UploadMerge />
-    <UploadNewLang />
     <DeleteLang />
   </div>
 </template>

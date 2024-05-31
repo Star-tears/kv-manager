@@ -11,7 +11,7 @@
         class="mb-2 w-full"
         :loading="isLoading"
         :disabled="isValid"
-        type="primary"
+        type="info"
         @click="downloadBtnClicked"
         >下载</n-button
       >

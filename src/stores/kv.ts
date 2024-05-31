@@ -59,6 +59,10 @@ export const useKvStore = defineStore('kv', () => {
         item['value'] = item.lang;
         return item;
       });
+      if ((res.data as Record<string, any>[]).length > 0) {
+        langKey.value = (res.data as Record<string, any>[])[0].lang;
+        langValue.value = (res.data as Record<string, any>[])[1].lang;
+      }
     }
   };
   return {
