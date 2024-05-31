@@ -1,6 +1,4 @@
-import argparse
 import os
-
 from app.common.config import Config
 from app.core import db
 from fastapi import FastAPI
@@ -12,7 +10,6 @@ import uvicorn
 from app.api.main import api_router
 from app.core.config import settings
 from fastapi.staticfiles import StaticFiles
-from dotenv import load_dotenv
 import mimetypes
 
 mimetypes.init()
@@ -20,15 +17,9 @@ mimetypes.add_type("application/javascript", ".js")
 mimetypes.add_type("text/css", ".css")
 mimetypes.add_type("image/svg+xml", ".svg")
 
-# 加载.env文件，如果存在的话
-load_dotenv(".env", override=False)  # 设置override=False表示环境变量优先
-active_env = os.getenv("ACTIVE_ENV")
-load_dotenv(f".env.{active_env}", override=False)
 
 address = os.getenv("KV_SERVER_ADDRESS", "0.0.0.0")
 port = int(os.getenv("KV_SERVER_PORT", 11028))
-Config.WEBSERVER = os.getenv("KV_WEBSERVER_PATH", ".web-server")
-Config.FRONTEND = os.getenv("KV_FRONTEND_PATH", "dist")
 
 
 def custom_generate_unique_id(route: APIRoute) -> str:

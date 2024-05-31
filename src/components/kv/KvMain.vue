@@ -93,7 +93,7 @@ import KvHisDialog from './dialogs/KvHisDialog.vue';
 import type { VxeTable } from 'vxe-table';
 
 const kvStore = useKvStore();
-const { langKey, langValue } = storeToRefs(kvStore);
+const { langKey, langValue,kvItemAddCount } = storeToRefs(kvStore);
 const tableRef = ref<InstanceType<typeof VxeTable>>(null);
 const message = useMessage();
 const filterName = ref('');
@@ -106,6 +106,10 @@ watch(langKey, () => {
   searchEvent();
 });
 watch(langValue, () => {
+  searchEvent();
+});
+
+watch(kvItemAddCount, () => {
   searchEvent();
 });
 

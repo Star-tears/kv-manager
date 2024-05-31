@@ -32,6 +32,7 @@ export const useKvStore = defineStore('kv', () => {
   const langKey = ref<string>('');
   const langValue = ref<string>('');
   const langList = ref<Record<string, any>[]>([]);
+  const kvItemAddCount = ref<number>(0);
   const kvEditStatus = ref<'main' | 'merge-check' | 'all-empty'>('main');
   const mergeCheckLang = ref<string>('');
   const mergeCheckFilePath = ref<string>('');
@@ -39,6 +40,14 @@ export const useKvStore = defineStore('kv', () => {
   const checkEmptyCount = ref<number>(0);
   const checkEmptyIsLoading = ref<boolean>(false);
 
+  watch(langList, () => {
+    if (langList.value.find((obj) => obj.value === langKey.value) === undefined) {
+      langKey.value = '';
+    }
+    if (langList.value.find((obj) => obj.value === langValue.value) === undefined) {
+      langValue.value = '';
+    }
+  });
   const refreshLanglist = async () => {
     const res = await KvService.kvGetLangList();
     if (res.code === 0) {
@@ -59,6 +68,7 @@ export const useKvStore = defineStore('kv', () => {
     mergeCheckFilePath,
     mergeIsLoading,
     checkEmptyCount,
-    checkEmptyIsLoading
+    checkEmptyIsLoading,
+    kvItemAddCount
   };
 });

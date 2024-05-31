@@ -231,6 +231,21 @@ def delete_kv(session: Session, kv_id: int):
         return f"No KvId found with id {kv_id}"
 
 
+def delete_language(session: Session, lang: str):
+    lang_to_delete = session.exec(select(Language).where(Language.lang == lang)).first()
+    kv_to_delete = session.exec(select(KvData).where(KvData.language == lang)).all()
+    kvcord_to_delete = session.exec(
+        select(KvRecord).where(KvRecord.language == lang)
+    ).all()
+    if lang_to_delete:
+        session.delete(lang_to_delete)
+    for kv in kv_to_delete:
+        session.delete(kv)
+    for kvcord in kvcord_to_delete:
+        session.delete(kvcord)
+    session.commit()
+
+
 def get_null_value_kv(session: Session, lang_key: str, lang_value: str):
     B1 = aliased(KvData)
     B2 = aliased(KvData)

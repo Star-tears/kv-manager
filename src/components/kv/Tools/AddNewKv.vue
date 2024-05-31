@@ -20,7 +20,7 @@ import AddNewKvDialog from '../dialogs/AddNewKvDialog.vue';
 const dialog = useDialog();
 const message = useMessage();
 const kvStore = useKvStore();
-const { langList } = storeToRefs(kvStore);
+const { langList, kvItemAddCount } = storeToRefs(kvStore);
 const isLoading = ref(false);
 
 const addKeyLang = ref<string>('');
@@ -60,7 +60,7 @@ const addNewClick = async () => {
         });
         if (res.code === 0) {
           message.success('新增成功');
-          kvStore.refreshKvItemList();
+          kvItemAddCount.value++;
         }
       } else {
         message.error('请填写完整信息');

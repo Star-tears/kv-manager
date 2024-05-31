@@ -69,6 +69,23 @@ export type $OpenApiTs = {
             };
         };
     };
+    '/api/v1/kv/delete_lang': {
+        post: {
+            req: {
+                requestBody: LanguageItemBase;
+            };
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: ResponseBase;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
     '/api/v1/kv/get_lang_list': {
         get: {
             res: {
@@ -242,6 +259,42 @@ export type $OpenApiTs = {
                  * Successful Response
                  */
                 200: unknown;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
+    '/api/v1/kv/download-all-with-zip/{filename}': {
+        get: {
+            req: {
+                filename: string;
+            };
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: unknown;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
+    '/api/v1/feishu/trans_text': {
+        post: {
+            req: {
+                sourceLanguage: unknown;
+                targetLanguage: unknown;
+                text: unknown;
+            };
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: ResponseBase;
                 /**
                  * Validation Error
                  */

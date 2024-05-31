@@ -33,6 +33,12 @@ def create_lang(data: LanguageItemBase, session: SessionDep):
     return ResponseBase(code=0, data=result)
 
 
+@router.post("/delete_lang", response_model=ResponseBase)
+def delete_lang(data: LanguageItemBase, session: SessionDep):
+    crud.delete_language(session, data.lang)
+    return ResponseBase(code=0, data={})
+
+
 @router.get("/get_lang_list", response_model=ResponseBase)
 def get_lang_list(session: SessionDep):
     result = crud.get_lang_list(session)
@@ -183,6 +189,9 @@ async def download_file(filePath: str):
 
 @router.get("/download-all-with-zip/{filename}")
 async def download_all_with_zip(filename: str, session: SessionDep):
+    folder_path = os.path.join(Config.WEBSERVER, "kv", "downloads", "ts")
+    delete_folder(folder_path)
+    create_folder(folder_path)
     langList = crud.get_lang_list(session)
     for el in langList:
         lang = el.lang

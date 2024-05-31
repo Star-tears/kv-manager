@@ -26,6 +26,25 @@ export class KvService {
     }
     
     /**
+     * Delete Lang
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static kvDeleteLang(data: $OpenApiTs['/api/v1/kv/delete_lang']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/delete_lang']['post']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/kv/delete_lang',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
      * Get Lang List
      * @returns ResponseBase Successful Response
      * @throws ApiError
@@ -221,6 +240,53 @@ export class KvService {
             url: '/api/v1/kv/download-file/{filePath}',
             path: {
                 filePath: data.filePath
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Download All With Zip
+     * @param data The data for the request.
+     * @param data.filename
+     * @returns unknown Successful Response
+     * @throws ApiError
+     */
+    public static kvDownloadAllWithZip(data: $OpenApiTs['/api/v1/kv/download-all-with-zip/{filename}']['get']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/download-all-with-zip/{filename}']['get']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/kv/download-all-with-zip/{filename}',
+            path: {
+                filename: data.filename
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+}
+
+export class FeishuService {
+    /**
+     * Trans Text
+     * @param data The data for the request.
+     * @param data.sourceLanguage
+     * @param data.text
+     * @param data.targetLanguage
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static feishuTransText(data: $OpenApiTs['/api/v1/feishu/trans_text']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/feishu/trans_text']['post']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/feishu/trans_text',
+            query: {
+                source_language: data.sourceLanguage,
+                text: data.text,
+                target_language: data.targetLanguage
             },
             errors: {
                 422: 'Validation Error'

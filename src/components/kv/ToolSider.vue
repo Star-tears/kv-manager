@@ -7,12 +7,14 @@
     <CheckAllEmpty />
     <UploadMerge />
     <UploadNewLang />
+    <DeleteLang />
   </div>
 </template>
 
 <script setup lang="ts">
 import AddNewKv from './Tools/AddNewKv.vue';
 import CheckAllEmpty from './Tools/CheckAllEmpty.vue';
+import DeleteLang from './Tools/DeleteLang.vue';
 import DownloadZip from './Tools/DownloadZip.vue';
 </script>
 
