@@ -35,7 +35,8 @@
         <vxe-column type="seq" width="40"></vxe-column>
         <vxe-column field="lang_key" title="键语种" width="100" sortable> </vxe-column>
         <vxe-column field="key" title="键" sortable> </vxe-column>
-        <vxe-column field="lang_value" title="值语种" width="100" sortable> </vxe-column>
+        <vxe-column field="lang_value" title="值语种" :filters="langList" width="120" sortable>
+        </vxe-column>
         <vxe-column
           field="value"
           title="新值"
@@ -76,7 +77,7 @@ import { storeToRefs } from 'pinia';
 import type { VxeTable } from 'vxe-table';
 
 const kvStore = useKvStore();
-const { kvEditStatus, checkEmptyCount, checkEmptyIsLoading } = storeToRefs(kvStore);
+const { kvEditStatus, checkEmptyCount, checkEmptyIsLoading, langList } = storeToRefs(kvStore);
 const tableRef = ref<InstanceType<typeof VxeTable>>(null);
 const list = ref<CheckEmptyItem[]>([]);
 const message = useMessage();
@@ -111,7 +112,7 @@ const backHome = () => {
 };
 
 const valueChangeEvent = async (row: CheckEmptyItem) => {
-  const res = await KvService.kvUpdateKv({
+  await KvService.kvUpdateKv({
     requestBody: {
       key: row.key,
       langKey: row.lang_key,
