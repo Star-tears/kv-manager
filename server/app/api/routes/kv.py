@@ -23,8 +23,6 @@ from fastapi import APIRouter, File, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 
 from app.utils import crud
-import lark_oapi as lark
-from lark_oapi.api.translation.v1 import *
 
 
 router = APIRouter()
@@ -93,13 +91,7 @@ def upload_new_lang(data: LangWithPath, session: SessionDep):
                 if len(kv_list) == 2:
                     kv_map[kv_list[0]] = kv_list[1]
                     if not langValueIsCreated and len(kv_list[1]) > 0:
-                        response = feishu_helper.text_detect(kv_list[1])
-                        if not response.success():
-                            lark.logger.error(
-                                f"client.translation.v1.text.detect failed, code: {response.code}, msg: {response.msg}, log_id: {response.get_log_id()}"
-                            )
-                            langValue = ""
-                        langValue = response.data.language
+                        langValue = feishu_helper.text_detect(kv_list[1])
                         crud.create_lang(session, data.lang, langValue)
                         langValueIsCreated = True
         for k, v in kv_map.items():

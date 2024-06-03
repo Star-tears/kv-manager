@@ -7,25 +7,64 @@ from app.models.response import ResponseBase
 from app.utils import crud
 import app.utils.feishu_helper as feishu_helper
 from fastapi import APIRouter
-import lark_oapi as lark
-from lark_oapi.api.translation.v1 import *
+import requests
 
 router = APIRouter()
+
+
+# @router.post("/trans_text", response_model=ResponseBase)
+# def trans_text(source_language, text, lang, session: SessionDep):
+#     target_language = crud.get_feishu_language(session, lang)
+#     # 发起请求
+#     response: TranslateTextResponse = feishu_helper.text_translate(
+#         source_language, text, target_language
+#     )
+
+#     # 处理失败返回
+#     if not response.success():
+#         lark.logger.error(
+#             f"client.translation.v1.text.translate failed, code: {response.code}, msg: {response.msg}, log_id: {response.get_log_id()}"
+#         )
+#         return ResponseBase(code=response.code, data={"msg": response.msg})
+#     res_data = json.loads(lark.JSON.marshal(response.data, indent=4))
+#     return ResponseBase(code=response.code, data=res_data)
 
 
 @router.post("/trans_text", response_model=ResponseBase)
 def trans_text(source_language, text, lang, session: SessionDep):
     target_language = crud.get_feishu_language(session, lang)
-    # 发起请求
-    response: TranslateTextResponse = feishu_helper.text_translate(
-        source_language, text, target_language
-    )
+    url = "https://open.feishu.cn/open-apis/translation/v1/text/translate"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + feishu_helper.get_tenant_access_token(),
+    }
+    data = {
+        "source_language": source_language,
+        "target_language": target_language,
+        "text": text,
+    }
 
-    # 处理失败返回
-    if not response.success():
-        lark.logger.error(
-            f"client.translation.v1.text.translate failed, code: {response.code}, msg: {response.msg}, log_id: {response.get_log_id()}"
-        )
-        return ResponseBase(code=response.code, data={"msg": response.msg})
-    res_data = json.loads(lark.JSON.marshal(response.data, indent=4))
-    return ResponseBase(code=response.code, data=res_data)
+    response = requests.post(url, headers=headers, json=data)
+    res = json.loads(response.text)
+    return ResponseBase(code=res["code"], data=res["data"])
+
+
+if __name__ == "__main__":
+    url = "https://open.feishu.cn/open-apis/translation/v1/text/translate"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer t-g10463h7UZ67ZX6UNKP4X4J5ROQOJ4ET32H74JOV",
+    }
+    data = {
+        "glossary": [{"from": "飞书", "to": "Lark"}],
+        "source_language": "zh",
+        "target_language": "en",
+        "text": "尝试使用一下飞书吧",
+    }
+
+    response = requests.post(url, headers=headers, json=data)
+
+    # 打印请求的响应头和响应内容
+    print("Status Code:", response.status_code)
+    print("Response Headers:", response.headers)
+    print("Response Content:", response.text)
