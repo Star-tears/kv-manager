@@ -167,10 +167,11 @@ const historyClicked = (row: KvItem) => {
 
 const translateByFeishu = async (row: KvItem) => {
   transIsloadingId.value = row.kv_id;
+  console.log(row);
   const res = await FeishuService.feishuTransText({
     sourceLanguage: row.lang_key,
     text: row.key,
-    lang: row.lang_value
+    lang: row.lang_value ? row.lang_value : langValue.value
   });
   if (res.code === 0) {
     row.value = (res.data as Record<string, any>)['text'];
@@ -179,7 +180,7 @@ const translateByFeishu = async (row: KvItem) => {
         key: row.key,
         langKey: row.lang_key,
         value: row.value,
-        langValue: row.lang_value,
+        langValue: row.lang_value ? row.lang_value : langValue.value,
         kvId: row.kv_id
       }
     });
