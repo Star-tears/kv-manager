@@ -35,7 +35,7 @@ app = FastAPI(
 )
 app.include_router(api_router, prefix=settings.API_V1_STR)
 app.mount(
-    "/kv-manager/assets",
+    "/ts-flow/assets",
     StaticFiles(directory=os.path.join(Config.FRONTEND, "assets")),
     name="static",
 )
@@ -47,12 +47,12 @@ async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-@app.get("/kv-manager", response_class=HTMLResponse, tags=["kv-manager"])
+@app.get("/ts-flow", response_class=HTMLResponse, tags=["ts-flow"])
 async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-@app.get("/kv-manager/favicon.ico", tags=["favicon"])
+@app.get("/ts-flow/favicon.ico", tags=["favicon"])
 async def favicon():
     # 这里假设你有一个放在static目录下的favicon.ico文件
     return File(
