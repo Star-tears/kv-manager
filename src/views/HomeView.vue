@@ -1,7 +1,7 @@
 <template>
   <n-layout style="height: 100vh; width: 100vw">
     <n-layout-header style="height: 64px; padding: 24px" bordered>
-      <div class="font-semibold">Qt翻译ts文件管理工具</div>
+      <div class="font-semibold">Ts-Flow</div>
     </n-layout-header>
     <n-layout position="absolute" style="top: 64px" has-sider sider-placement="right">
       <n-layout content-style="padding: 12px 24px 12px 24px;">
