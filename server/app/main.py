@@ -1,7 +1,7 @@
 import os
 from app.common.config import Config
 from app.core import db
-from fastapi import FastAPI
+from fastapi import FastAPI, File
 from fastapi import FastAPI, Request
 from fastapi.routing import APIRoute
 from fastapi.responses import HTMLResponse
@@ -35,7 +35,7 @@ app = FastAPI(
 )
 app.include_router(api_router, prefix=settings.API_V1_STR)
 app.mount(
-    "/assets",
+    "/kv-manager/assets",
     StaticFiles(directory=os.path.join(Config.FRONTEND, "assets")),
     name="static",
 )
@@ -45,6 +45,20 @@ templates = Jinja2Templates(directory=os.path.join(Config.FRONTEND))
 @app.get("/", response_class=HTMLResponse, tags=["index"])
 async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/kv-manager", response_class=HTMLResponse, tags=["kv-manager"])
+async def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/kv-manager/favicon.ico", tags=["favicon"])
+async def favicon():
+    # 这里假设你有一个放在static目录下的favicon.ico文件
+    return File(
+        os.path.join(Config.FRONTEND, "favicon.ico"),
+        media_type="image/vnd.microsoft.icon",
+    )
 
 
 if __name__ == "__main__":
