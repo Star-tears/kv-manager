@@ -7,15 +7,65 @@ import type { $OpenApiTs } from './types.gen';
 
 export class KvService {
     /**
+     * Delete Lang
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static kvDeleteLang(data: $OpenApiTs['/api/v1/kv/delete_lang']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/delete_lang']['post']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/kv/delete_lang',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Get Lang List
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static kvGetLangList(): CancelablePromise<$OpenApiTs['/api/v1/kv/get_lang_list']['get']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/kv/get_lang_list'
+        });
+    }
+    
+    /**
+     * Update Kv
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static kvUpdateKv(data: $OpenApiTs['/api/v1/kv/update_kv']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/update_kv']['post']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/kv/update_kv',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
      * Get Kv Data
      * @param data The data for the request.
      * @param data.requestBody
      * @returns ResponseBase Successful Response
      * @throws ApiError
      */
-    public static kvGetKvData(data: $OpenApiTs['/api/v1/kv/get_kv_data']['get']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/get_kv_data']['get']['res'][200]> {
+    public static kvGetKvData(data: $OpenApiTs['/api/v1/kv/get_kv_data']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/get_kv_data']['post']['res'][200]> {
         return __request(OpenAPI, {
-            method: 'GET',
+            method: 'POST',
             url: '/api/v1/kv/get_kv_data',
             body: data.requestBody,
             mediaType: 'application/json',
@@ -32,29 +82,10 @@ export class KvService {
      * @returns ResponseBase Successful Response
      * @throws ApiError
      */
-    public static kvGetKvRecord(data: $OpenApiTs['/api/v1/kv/get_kv_record']['get']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/get_kv_record']['get']['res'][200]> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/kv/get_kv_record',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Update Kv
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ResponseBase Successful Response
-     * @throws ApiError
-     */
-    public static kvUpdateKv(data: $OpenApiTs['/api/v1/kv/update_kv']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/update_kv']['post']['res'][200]> {
+    public static kvGetKvRecord(data: $OpenApiTs['/api/v1/kv/get_kv_record']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/get_kv_record']['post']['res'][200]> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/v1/kv/update_kv',
+            url: '/api/v1/kv/get_kv_record',
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
@@ -83,28 +114,16 @@ export class KvService {
     }
     
     /**
-     * Get Bucket List
-     * @returns ResponseBase Successful Response
-     * @throws ApiError
-     */
-    public static kvGetBucketList(): CancelablePromise<$OpenApiTs['/api/v1/kv/get_bucket_list']['get']['res'][200]> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/kv/get_bucket_list'
-        });
-    }
-    
-    /**
-     * Create Bucket
+     * Get All Null Value Kv
      * @param data The data for the request.
      * @param data.requestBody
      * @returns ResponseBase Successful Response
      * @throws ApiError
      */
-    public static kvCreateBucket(data: $OpenApiTs['/api/v1/kv/create_bucket']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/create_bucket']['post']['res'][200]> {
+    public static kvGetAllNullValueKv(data: $OpenApiTs['/api/v1/kv/get_all_null_value_kv']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/get_all_null_value_kv']['post']['res'][200]> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/v1/kv/create_bucket',
+            url: '/api/v1/kv/get_all_null_value_kv',
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
@@ -114,16 +133,16 @@ export class KvService {
     }
     
     /**
-     * Rename Bucket
+     * Upload New Lang
      * @param data The data for the request.
      * @param data.requestBody
      * @returns ResponseBase Successful Response
      * @throws ApiError
      */
-    public static kvRenameBucket(data: $OpenApiTs['/api/v1/kv/rename_bucket']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/rename_bucket']['post']['res'][200]> {
+    public static kvUploadNewLang(data: $OpenApiTs['/api/v1/kv/upload_new_lang']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/upload_new_lang']['post']['res'][200]> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/v1/kv/rename_bucket',
+            url: '/api/v1/kv/upload_new_lang',
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
@@ -133,16 +152,35 @@ export class KvService {
     }
     
     /**
-     * Delete Bucket
+     * Gen Ts
      * @param data The data for the request.
      * @param data.requestBody
      * @returns ResponseBase Successful Response
      * @throws ApiError
      */
-    public static kvDeleteBucket(data: $OpenApiTs['/api/v1/kv/delete_bucket']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/delete_bucket']['post']['res'][200]> {
+    public static kvGenTs(data: $OpenApiTs['/api/v1/kv/gen_ts']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/gen_ts']['post']['res'][200]> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/v1/kv/delete_bucket',
+            url: '/api/v1/kv/gen_ts',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Merge Check
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static kvMergeCheck(data: $OpenApiTs['/api/v1/kv/merge_check']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/merge_check']['post']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/kv/merge_check',
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
@@ -173,16 +211,64 @@ export class KvService {
     /**
      * Download File
      * @param data The data for the request.
-     * @param data.requestBody
+     * @param data.filePath
      * @returns unknown Successful Response
      * @throws ApiError
      */
-    public static kvDownloadFile(data: $OpenApiTs['/api/v1/kv/download-file']['get']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/download-file']['get']['res'][200]> {
+    public static kvDownloadFile(data: $OpenApiTs['/api/v1/kv/download-file/{filePath}']['get']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/download-file/{filePath}']['get']['res'][200]> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/kv/download-file',
-            body: data.requestBody,
-            mediaType: 'application/json',
+            url: '/api/v1/kv/download-file/{filePath}',
+            path: {
+                filePath: data.filePath
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Download All With Zip
+     * @param data The data for the request.
+     * @param data.filename
+     * @returns unknown Successful Response
+     * @throws ApiError
+     */
+    public static kvDownloadAllWithZip(data: $OpenApiTs['/api/v1/kv/download-all-with-zip/{filename}']['get']['req']): CancelablePromise<$OpenApiTs['/api/v1/kv/download-all-with-zip/{filename}']['get']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/kv/download-all-with-zip/{filename}',
+            path: {
+                filename: data.filename
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+}
+
+export class FeishuService {
+    /**
+     * Trans Text
+     * @param data The data for the request.
+     * @param data.sourceLanguage
+     * @param data.text
+     * @param data.lang
+     * @returns ResponseBase Successful Response
+     * @throws ApiError
+     */
+    public static feishuTransText(data: $OpenApiTs['/api/v1/feishu/trans_text']['post']['req']): CancelablePromise<$OpenApiTs['/api/v1/feishu/trans_text']['post']['res'][200]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/feishu/trans_text',
+            query: {
+                source_language: data.sourceLanguage,
+                text: data.text,
+                lang: data.lang
+            },
             errors: {
                 422: 'Validation Error'
             }

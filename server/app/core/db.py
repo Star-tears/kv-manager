@@ -2,7 +2,7 @@ import os
 from sqlmodel import SQLModel, create_engine
 
 from app.common.config import Config
-from app.models.sql_models import KvData, KvRecord
+from app.models.sql_models import *
 
 
 class Db:

@@ -13,34 +13,6 @@ export const $Body_kv_upload_file = {
     title: 'Body_kv-upload_file'
 } as const;
 
-export const $BucketFile = {
-    properties: {
-        bucketName: {
-            type: 'string',
-            title: 'Bucketname'
-        },
-        relativePath: {
-            type: 'string',
-            title: 'Relativepath'
-        }
-    },
-    type: 'object',
-    required: ['bucketName', 'relativePath'],
-    title: 'BucketFile'
-} as const;
-
-export const $BucketItemBase = {
-    properties: {
-        bucketName: {
-            type: 'string',
-            title: 'Bucketname'
-        }
-    },
-    type: 'object',
-    required: ['bucketName'],
-    title: 'BucketItemBase'
-} as const;
-
 export const $HTTPValidationError = {
     properties: {
         detail: {
@@ -55,56 +27,111 @@ export const $HTTPValidationError = {
     title: 'HTTPValidationError'
 } as const;
 
+export const $KvIdItem = {
+    properties: {
+        kvId: {
+            type: 'integer',
+            title: 'Kvid'
+        }
+    },
+    type: 'object',
+    required: ['kvId'],
+    title: 'KvIdItem'
+} as const;
+
 export const $KvItem = {
     properties: {
-        bucketName: {
-            type: 'string',
-            title: 'Bucketname'
-        },
         key: {
             type: 'string',
             title: 'Key'
+        },
+        langKey: {
+            type: 'string',
+            title: 'Langkey'
         },
         value: {
             type: 'string',
             title: 'Value'
+        },
+        langValue: {
+            type: 'string',
+            title: 'Langvalue'
+        },
+        kvId: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Kvid'
         }
     },
     type: 'object',
-    required: ['bucketName', 'key', 'value'],
+    required: ['key', 'langKey', 'value', 'langValue'],
     title: 'KvItem'
 } as const;
 
-export const $KvItemBase = {
+export const $KvRecordItem = {
     properties: {
-        bucketName: {
+        langValue: {
             type: 'string',
-            title: 'Bucketname'
+            title: 'Langvalue'
         },
-        key: {
-            type: 'string',
-            title: 'Key'
+        kvId: {
+            type: 'integer',
+            title: 'Kvid'
         }
     },
     type: 'object',
-    required: ['bucketName', 'key'],
-    title: 'KvItemBase'
+    required: ['langValue', 'kvId'],
+    title: 'KvRecordItem'
 } as const;
 
-export const $RenameBucketItem = {
+export const $LangKv = {
     properties: {
-        bucketName: {
+        langKey: {
             type: 'string',
-            title: 'Bucketname'
+            title: 'Langkey'
         },
-        newBucketName: {
+        langValue: {
             type: 'string',
-            title: 'Newbucketname'
+            title: 'Langvalue'
         }
     },
     type: 'object',
-    required: ['bucketName', 'newBucketName'],
-    title: 'RenameBucketItem'
+    required: ['langKey', 'langValue'],
+    title: 'LangKv'
+} as const;
+
+export const $LangWithPath = {
+    properties: {
+        lang: {
+            type: 'string',
+            title: 'Lang'
+        },
+        path: {
+            type: 'string',
+            title: 'Path'
+        }
+    },
+    type: 'object',
+    required: ['lang', 'path'],
+    title: 'LangWithPath'
+} as const;
+
+export const $LanguageItemBase = {
+    properties: {
+        lang: {
+            type: 'string',
+            title: 'Lang'
+        }
+    },
+    type: 'object',
+    required: ['lang'],
+    title: 'LanguageItemBase'
 } as const;
 
 export const $ResponseBase = {

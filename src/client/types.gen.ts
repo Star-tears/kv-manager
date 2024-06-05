@@ -4,33 +4,39 @@ export type Body_kv_upload_file = {
     file: (Blob | File);
 };
 
-export type BucketFile = {
-    bucketName: string;
-    relativePath: string;
-};
-
-export type BucketItemBase = {
-    bucketName: string;
-};
-
 export type HTTPValidationError = {
     detail?: Array<ValidationError>;
 };
 
+export type KvIdItem = {
+    kvId: number;
+};
+
 export type KvItem = {
-    bucketName: string;
     key: string;
+    langKey: string;
     value: string;
+    langValue: string;
+    kvId?: number | null;
 };
 
-export type KvItemBase = {
-    bucketName: string;
-    key: string;
+export type KvRecordItem = {
+    langValue: string;
+    kvId: number;
 };
 
-export type RenameBucketItem = {
-    bucketName: string;
-    newBucketName: string;
+export type LangKv = {
+    langKey: string;
+    langValue: string;
+};
+
+export type LangWithPath = {
+    lang: string;
+    path: string;
+};
+
+export type LanguageItemBase = {
+    lang: string;
 };
 
 export type ResponseBase = {
@@ -46,10 +52,10 @@ export type ValidationError = {
 };
 
 export type $OpenApiTs = {
-    '/api/v1/kv/get_kv_data': {
-        get: {
+    '/api/v1/kv/delete_lang': {
+        post: {
             req: {
-                requestBody: BucketItemBase;
+                requestBody: LanguageItemBase;
             };
             res: {
                 /**
@@ -63,20 +69,13 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/api/v1/kv/get_kv_record': {
+    '/api/v1/kv/get_lang_list': {
         get: {
-            req: {
-                requestBody: KvItemBase;
-            };
             res: {
                 /**
                  * Successful Response
                  */
                 200: ResponseBase;
-                /**
-                 * Validation Error
-                 */
-                422: HTTPValidationError;
             };
         };
     };
@@ -97,10 +96,44 @@ export type $OpenApiTs = {
             };
         };
     };
+    '/api/v1/kv/get_kv_data': {
+        post: {
+            req: {
+                requestBody: LangKv;
+            };
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: ResponseBase;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
+    '/api/v1/kv/get_kv_record': {
+        post: {
+            req: {
+                requestBody: KvRecordItem;
+            };
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: ResponseBase;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
     '/api/v1/kv/delete_kv': {
         post: {
             req: {
-                requestBody: KvItemBase;
+                requestBody: KvIdItem;
             };
             res: {
                 /**
@@ -114,20 +147,10 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/api/v1/kv/get_bucket_list': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                200: ResponseBase;
-            };
-        };
-    };
-    '/api/v1/kv/create_bucket': {
+    '/api/v1/kv/get_all_null_value_kv': {
         post: {
             req: {
-                requestBody: BucketItemBase;
+                requestBody: LanguageItemBase;
             };
             res: {
                 /**
@@ -141,10 +164,10 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/api/v1/kv/rename_bucket': {
+    '/api/v1/kv/upload_new_lang': {
         post: {
             req: {
-                requestBody: RenameBucketItem;
+                requestBody: LangWithPath;
             };
             res: {
                 /**
@@ -158,10 +181,27 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/api/v1/kv/delete_bucket': {
+    '/api/v1/kv/gen_ts': {
         post: {
             req: {
-                requestBody: BucketItemBase;
+                requestBody: LanguageItemBase;
+            };
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: ResponseBase;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
+    '/api/v1/kv/merge_check': {
+        post: {
+            req: {
+                requestBody: LangWithPath;
             };
             res: {
                 /**
@@ -192,16 +232,52 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/api/v1/kv/download-file': {
+    '/api/v1/kv/download-file/{filePath}': {
         get: {
             req: {
-                requestBody: BucketFile;
+                filePath: string;
             };
             res: {
                 /**
                  * Successful Response
                  */
                 200: unknown;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
+    '/api/v1/kv/download-all-with-zip/{filename}': {
+        get: {
+            req: {
+                filename: string;
+            };
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: unknown;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
+    '/api/v1/feishu/trans_text': {
+        post: {
+            req: {
+                lang: unknown;
+                sourceLanguage: unknown;
+                text: unknown;
+            };
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: ResponseBase;
                 /**
                  * Validation Error
                  */
