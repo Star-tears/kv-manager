@@ -56,3 +56,14 @@ def rename_file(old_path, new_path):
         print(f"文件'{old_path}'已成功重命名为'{new_path}'")
     except OSError as e:
         print(f"重命名文件时发生错误: {e.strerror}")
+
+
+def mv_folder(src, dst):
+    # 原始的文件夹路径
+    source_folder = src
+
+    # 目标文件夹路径
+    destination_folder = dst
+
+    # 复制文件夹及其内容
+    shutil.copytree(source_folder, destination_folder)
