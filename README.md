@@ -39,7 +39,7 @@ poetry env list
 >
 > 虚拟环境所在路径一般在`~/.cache/pypoetry/virtualenvs`目录下
 >
-> 如解释器路径`/root/.cache/pypoetry/virtualenvs/pyide-e2Kx_ySG-py3.10/bin/python`
+> 如解释器路径`/root/.cache/pypoetry/virtualenvs/kv-2lXqAPel-py3.10/bin/python`
 
 回到项目根目录，安装前后端所有依赖
 
@@ -47,7 +47,20 @@ poetry env list
 yarn install-all
 ```
 
-开发环境调试前，在`server`目录下新建`.env.dev`文件，内容示例：
+开发环境调试前，在`server`目录下新建`.web-server`目录和`.env.dev`文件
+
+`.web-server`目录结构示例：
+
+```bash
+.web-server
+├── kv
+│   ├── backup
+│   ├── database
+│   └── downloads
+└── uploads
+```
+
+`.env.dev`文件内容示例：
 
 ```bash
 KV_SERVER_ADDRESS=0.0.0.0
