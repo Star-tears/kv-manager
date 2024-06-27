@@ -16,8 +16,9 @@
     "install-all": "yarn install && cd server && poetry install",
     "build-server": "cd server && python -m nuitka --lto=no --standalone --onefile --output-dir=./build --output-filename=ts-flow-start app/main.py",
     "build-all": "yarn build && yarn build-server",
-    "preview-after-build": "cp -r dist ./server/build && cp -r .web-server ./server/build && cp ./server/.env ./server/build && cp ./server/.env.prod ./server/build && cd ./server/build && ./ts-flow-start",
-    "package-tar": "mkdir -p ./server/build/ts-flow && cd ./server/build && cp ts-flow-start ts-flow && cp .env ts-flow && cp .env.prod ts-flow && cp -r .web-server ts-flow && cp -r dist ts-flow && tar -czvf ts-flow.tar.gz ts-flow"
+    "mv-files-to-build": "cp -r dist ./server/build && cp -r .web-server ./server/build && cp ./server/.env.prod ./server/build",
+    "preview-after-build": "yarn mv-files-to-build && cd ./server/build && ./ts-flow-start",
+    "package-tar": "yarn mv-files-to-build && mkdir -p ./server/build/ts-flow && cd ./server/build && cp ts-flow-start ts-flow && cp .env.prod ts-flow && cp -r .web-server ts-flow && cp -r dist ts-flow && tar -czvf ts-flow.tar.gz ts-flow"
   },
   "dependencies": {
     "@iconify/vue": "^4.1.2",

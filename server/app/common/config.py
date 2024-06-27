@@ -3,7 +3,7 @@ import os
 
 # 加载.env文件，如果存在的话
 load_dotenv(".env", override=False)  # 设置override=False表示环境变量优先
-active_env = os.getenv("ACTIVE_ENV")
+active_env = os.getenv("ACTIVE_ENV", "prod")
 load_dotenv(f".env.{active_env}", override=False)
 
 
